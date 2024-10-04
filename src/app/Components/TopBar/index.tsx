@@ -5,7 +5,7 @@ import { TopBarItem } from "./TopBarItem";
 
 export const TopBar = ({ items }: { items: TopBarPropsItem[] }) => {
   return (
-    <nav className="flex items-center py-3 px-6 flex-wrap">
+    <nav className="flex items-center py-3 px-12 flex-wrap">
       <Link href="#" className="p-2 mr-4 inline-flex items-center">
         <SiRobinhood className="text-3xl text-white" />
       </Link>
