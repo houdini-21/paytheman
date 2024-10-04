@@ -1,15 +1,18 @@
 "use client";
 import { useState, useEffect } from "react";
-import { SelectComponent } from "@/app/Components";
+import { useAppDispatch, useAppSelector } from "@/Store";
+import { setStock, resetStock } from "@/Store/Stock/stockSlice";
+import { SelectComponent } from "@/Components";
 import getMarketSymbols from "@/app/hooks/getMarketSymbols";
-import { SelectComponentItem } from "@/app/Components/Select/interfaces";
+import { SelectComponentItem } from "@/Components/Select/interfaces";
 
 const Form = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchParam, setSearchParam] = useState<string>("");
   const [options, setOptions] = useState<SelectComponentItem[]>([]);
-  const [selectedOption, setSelectedOption] =
-    useState<SelectComponentItem | null>(null);
+  const stockName = useAppSelector((state) => state.stock.label);
+  const stockValue = useAppSelector((state) => state.stock.value);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const fetchMarketSymbols = async () => {
@@ -24,14 +27,23 @@ const Form = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold text-white">Buy</h1>
       <SelectComponent
-        label="Stock"
-        selectedOption={selectedOption}
+        label="Select a stock"
+        selectedOption={
+          stockValue
+            ? {
+                value: stockValue,
+                label: stockName,
+              }
+            : null
+        }
         options={options}
         isLoading={isLoading}
+        clearValue={() => {
+          dispatch(resetStock());
+        }}
         onChange={(selectedOption) => {
-          setSelectedOption(selectedOption);
+          dispatch(setStock(selectedOption));
         }}
         onInputChange={(inputValue) => {
           setSearchParam(inputValue);
