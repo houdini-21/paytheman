@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/Store";
 import { setStock, resetStock } from "@/Store/Stock/stockSlice";
 import { SelectComponent } from "@/Components";
-import getMarketSymbols from "@/app/hooks/getMarketSymbols";
+import { getMarketSymbols } from "@/app/hooks/getMarketData";
 import { SelectComponentItem } from "@/Components/Select/interfaces";
 
 const Form = () => {

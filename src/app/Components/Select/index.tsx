@@ -17,12 +17,12 @@ export const SelectComponent = ({
       <Select
         options={options}
         isSearchable
-        isClearable
         placeholder={placeholder}
         onChange={onChange}
         value={selectedOption}
         isLoading={isLoading}
         onInputChange={onInputChange}
+        backspaceRemovesValue={false}
         styles={{
           valueContainer: (base) => ({
             ...base,

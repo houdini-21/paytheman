@@ -1,13 +1,16 @@
-import Form from "./Components/Form";
 import Titles from "./Components/Titles";
+import Details from "./Components/Details";
 
 export default function StocksPage() {
   return (
     <div className="px-12">
       <Titles />
-      <div className="w-full flex flex-row">
-        <div className="w-full mr-5">
+      <div className="w-full flex flex-row mt-8">
+        <div className="w-10/12 mr-5">
           <div className="w-full h-96 pt-8"></div>
+        </div>
+        <div className="w-2/12 bg-zinc-900 rounded-lg shadow-lg">
+          <Details />
         </div>
       </div>
     </div>

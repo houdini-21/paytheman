@@ -17,8 +17,7 @@ export const SelectComponent = ({
       <Select
         name={label}
         options={options}
-        isSearchable
-        isClearable
+        isClearable={false}
         placeholder={placeholder}
         onChange={onChange}
         className="w-full"
