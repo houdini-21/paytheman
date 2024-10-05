@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SelectComponentItem } from "@/Components/Select/interfaces";
+import { SelectComponentItem } from "@/app/Components/Select/interfaces";
 
 interface StockState {
   value: string;

@@ -25,3 +25,8 @@ body {
     text-wrap: balance;
   }
 }
+
+.apexcharts-tooltip {
+  background: var(--background);
+  color: #0a0a0a;
+}

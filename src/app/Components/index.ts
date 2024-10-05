@@ -1,3 +1,3 @@
 export { TopBar } from "./TopBar";
-export { QuoteChart } from "./QuoteChart";
+export { CandlestickChart } from "./QuoteChart";
 export { SelectComponent } from "./Select";

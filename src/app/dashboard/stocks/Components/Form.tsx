@@ -2,9 +2,9 @@
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/Store";
 import { setStock, resetStock } from "@/Store/Stock/stockSlice";
-import { SelectComponent } from "@/Components";
+import { SelectComponent } from "@/app/Components";
 import { getMarketSymbols } from "@/app/hooks/getMarketData";
-import { SelectComponentItem } from "@/Components/Select/interfaces";
+import { SelectComponentItem } from "@/app/Components/Select/interfaces";
 
 const Form = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);

@@ -50,7 +50,7 @@ export const SelectComponent = ({
             return {
               ...styles,
               backgroundColor: isSelected
-                ? "#31A200"
+                ? "#22c55e"
                 : isFocused
                 ? "#3A3A3A"
                 : "#1F1F1F",

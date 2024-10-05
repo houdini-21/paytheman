@@ -7,3 +7,6 @@ export interface QuoteChartItem {
 export interface QuoteChartProps {
   data: QuoteChartItem[];
 }
+export interface CandlestickChartProps {
+  seriesData: Array<{ x: string; y: [number, number, number, number] }>;
+}

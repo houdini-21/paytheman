@@ -1,23 +1,47 @@
 "use client";
-import { LineChart, Line, ResponsiveContainer, YAxis } from "recharts";
-import { QuoteChartProps } from "./interfaces";
+import ReactApexChart from "react-apexcharts";
+import { CandlestickChartProps } from "./interfaces";
 
-export const QuoteChart = ({ data }: QuoteChartProps) => {
+export const CandlestickChart: React.FC<CandlestickChartProps> = ({
+  seriesData,
+}) => {
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <LineChart data={data}>
-        <YAxis />
-        <Line
-          type="monotone"
-          dataKey="pv"
-          stroke="#31A200"
-          isAnimationActive={true} // Activar la animación en los cambios
-          animationDuration={500} // Controlar la duración de la animación
-          animationEasing="ease-in-out" // Definir el tipo de animación
-          strokeWidth={3}
-          dot={false}
-        />
-      </LineChart>
-    </ResponsiveContainer>
+    <div id="chart">
+      <ReactApexChart
+        options={{
+          chart: {
+            type: "candlestick",
+            height: 350,
+            toolbar: {
+              show: false,
+            },
+          },
+          plotOptions: {
+            candlestick: {
+              colors: {
+                upward: "#22c55e",
+                downward: "#ef4444",
+              },
+            },
+          },
+          tooltip: {
+            style: {
+              fontSize: "14px",
+            },
+          },
+          xaxis: {
+            type: "datetime",
+          },
+          yaxis: {
+            tooltip: {
+              enabled: false,
+            },
+          },
+        }}
+        series={[{ data: seriesData }]}
+        type="candlestick"
+        height={350}
+      />
+    </div>
   );
 };
