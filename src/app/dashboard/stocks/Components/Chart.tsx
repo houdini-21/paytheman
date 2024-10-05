@@ -4,7 +4,10 @@ import Skeleton from "react-loading-skeleton";
 import moment from "moment";
 import { useAppDispatch, useAppSelector } from "@/Store";
 import { setQuoteData } from "@/Store/Stock/stockSlice";
-import { fetchHistoricalData } from "@/app/hooks/getMarketData";
+import {
+  fetchHistoricalData,
+  FetchHistoricalDataProps,
+} from "@/app/hooks/getMarketData";
 import { CandlestickChart, TimeframeButtons } from "@/app/Components";
 import { CandlestickChartItem } from "@/app/Components/QuoteChart/interfaces";
 
@@ -46,7 +49,7 @@ export const Chart = () => {
     return { start, end, timeframeEp };
   };
 
-  const fetchStockData = async () => {
+  const fetchStockData = async (timeframe: string, stockValue: string) => {
     setIsLoading(true);
     const { start, end, timeframeEp } = getDateRange(timeframe);
 
@@ -57,7 +60,7 @@ export const Chart = () => {
       end: end,
     });
 
-    const formattedData = data?.map((item: any) => ({
+    const formattedData = data?.map((item: FetchHistoricalDataProps) => ({
       x: new Date(item.t).getTime(),
       y: [item.o, item.h, item.l, item.c],
     }));
@@ -79,7 +82,9 @@ export const Chart = () => {
   };
 
   useEffect(() => {
-    fetchStockData();
+    fetchStockData(timeframe, stockValue);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stockValue, timeframe]);
 
   return (

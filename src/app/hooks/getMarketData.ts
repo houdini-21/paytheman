@@ -4,12 +4,29 @@ interface FetchMarketDataProps {
   start?: string;
   end?: string;
 }
+
+export interface FetchHistoricalDataProps {
+  c: number;
+  h: number;
+  l: number;
+  n: number;
+  o: number;
+  t: string;
+  v: number;
+  vw: number;
+}
+
+interface MarketSymbol {
+  symbol: string;
+  description: string;
+}
+
 export const getMarketSymbols = async (searchParam?: string) => {
   const response = await fetch(
     `https://finnhub.io/api/v1/search?q=${searchParam}&exchange=US&token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
   ).then((res) => res.json());
 
-  const marketSymbols = response.result.map((symbol: any) => ({
+  const marketSymbols = response.result.map((symbol: MarketSymbol) => ({
     label: `${symbol.description} (${symbol.symbol})`,
     value: symbol.symbol,
   }));

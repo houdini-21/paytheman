@@ -1,15 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import classNames from "classnames";
 import { useAppSelector } from "@/Store";
 import Form from "./Form";
-
-interface TitlesProps {
-  price: number;
-  change: number;
-  changePercent: number;
-}
 
 const Titles = () => {
   const stockName = useAppSelector((state) => state.stock.label);

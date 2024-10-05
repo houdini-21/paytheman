@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/Store";
-import { setStock, resetStock } from "@/Store/Stock/stockSlice";
+import { setStock } from "@/Store/Stock/stockSlice";
 import { SelectComponent } from "@/app/Components";
 import { getMarketSymbols } from "@/app/hooks/getMarketData";
 import { SelectComponentItem } from "@/app/Components/Select/interfaces";
@@ -39,9 +39,6 @@ const Form = () => {
         }
         options={options}
         isLoading={isLoading}
-        clearValue={() => {
-          dispatch(resetStock());
-        }}
         onChange={(selectedOption) => {
           dispatch(setStock(selectedOption));
         }}
