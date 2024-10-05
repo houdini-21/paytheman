@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import classNames from "classnames";
 import { useAppSelector } from "@/Store";
-import { getQuoteData } from "@/app/hooks/getMarketData";
 import Form from "./Form";
 
 interface TitlesProps {
@@ -13,26 +12,11 @@ interface TitlesProps {
 }
 
 const Titles = () => {
-  const [quoteData, setQuoteData] = useState<TitlesProps>({
-    price: 0,
-    change: 0,
-    changePercent: 0,
-  });
   const stockName = useAppSelector((state) => state.stock.label);
-  const stockValue = useAppSelector((state) => state.stock.value);
-
-  useEffect(() => {
-    const fetchQuoteData = async () => {
-      const quoteData = await getQuoteData(stockValue);
-      setQuoteData({
-        price: quoteData.c,
-        change: quoteData.d,
-        changePercent: quoteData.dp,
-      });
-    };
-
-    fetchQuoteData();
-  }, [stockValue]);
+  const quoteDataPrice = useAppSelector((state) => state.stock.price) || 0;
+  const quoteDataChange = useAppSelector((state) => state.stock.change) || 0;
+  const quoteDataChangePercent =
+    useAppSelector((state) => state.stock.changePercent) || 0;
 
   return (
     <div>
@@ -42,11 +26,11 @@ const Titles = () => {
           <div className="flex flex-col">
             <p
               className={classNames("text-2xl", {
-                "text-green-500": quoteData.change > 0,
-                "text-red-500": quoteData.change < 0,
+                "text-green-500": quoteDataChange > 0,
+                "text-red-500": quoteDataChange < 0,
               })}
             >
-              {quoteData.price.toLocaleString("en-US", {
+              {quoteDataPrice.toLocaleString("en-US", {
                 style: "currency",
                 currency: "USD",
               })}
@@ -54,15 +38,14 @@ const Titles = () => {
             <div className="flex flex-row items-center">
               <p
                 className={classNames("text-xl flex items-center", {
-                  "text-green-500": quoteData.change > 0,
-                  "text-red-500": quoteData.change < 0,
+                  "text-green-500": quoteDataChange > 0,
+                  "text-red-500": quoteDataChange < 0,
                 })}
               >
-                {quoteData.change} (
-                {Math.abs(quoteData.changePercent).toFixed(2)}
+                {quoteDataChange} ({Math.abs(quoteDataChangePercent).toFixed(2)}
                 %)
               </p>
-              {quoteData.change > 0 ? (
+              {quoteDataChange > 0 ? (
                 <FaArrowUp className="text-green-500 ml-2" />
               ) : (
                 <FaArrowDown className="text-red-500 ml-2" />

@@ -2,7 +2,8 @@
 import { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import moment from "moment";
-import { useAppSelector } from "@/Store";
+import { useAppDispatch, useAppSelector } from "@/Store";
+import { setQuoteData } from "@/Store/Stock/stockSlice";
 import { fetchHistoricalData } from "@/app/hooks/getMarketData";
 import { CandlestickChart, TimeframeButtons } from "@/app/Components";
 import { CandlestickChartItem } from "@/app/Components/QuoteChart/interfaces";
@@ -12,6 +13,7 @@ export const Chart = () => {
   const [timeframe, setTimeframe] = useState<string>("1D");
   const [dataStock, setDataStock] = useState<CandlestickChartItem[]>([]);
   const stockValue = useAppSelector((state) => state.stock.value);
+  const dispatch = useAppDispatch();
 
   const getDateRange = (timeframe: string) => {
     const end = moment().subtract(1, "days").endOf("day").toISOString();
@@ -59,6 +61,19 @@ export const Chart = () => {
       x: new Date(item.t).getTime(),
       y: [item.o, item.h, item.l, item.c],
     }));
+
+    const first = formattedData[0].y[0];
+    const last = formattedData[formattedData.length - 1].y[3];
+    const change = last - first;
+    const changePercent = (change / first) * 100;
+
+    dispatch(
+      setQuoteData({
+        price: last,
+        change: parseFloat(change.toFixed(2)),
+        changePercent: Math.round(changePercent * 100) / 100,
+      })
+    );
     setDataStock(formattedData);
     setIsLoading(false);
   };
