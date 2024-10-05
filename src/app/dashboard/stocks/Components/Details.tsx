@@ -4,10 +4,12 @@ import Skeleton from "react-loading-skeleton";
 import { useAppSelector } from "@/Store";
 import { getStockDetails } from "@/app/hooks/getMarketData";
 import "react-loading-skeleton/dist/skeleton.css";
+import Link from "next/link";
+import Image from "next/image";
 
 interface TableRowProps {
   label: string;
-  value: string | number;
+  value: string | number | JSX.Element;
 }
 
 interface DetailsProps {
@@ -28,7 +30,7 @@ interface DetailsProps {
 
 const TableRow = ({ label, value }: TableRowProps) => {
   return (
-    <div className="flex justify-between border-b border-gray-700 py-4">
+    <div className="flex justify-between items-center border-b border-gray-700 py-4">
       <span className="text-gray-400">{label}</span>
       <span className="text-white">{value}</span>
     </div>
@@ -53,7 +55,40 @@ const Details = () => {
         response.marketCapitalization ? response.marketCapitalization : 0
       );
       const data = [
-        { label: "Name", value: response.name ?? "N/A" },
+        {
+          label: "Logo",
+          value: (
+            <Image
+              src={
+                response.logo ??
+                "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png"
+              }
+              alt="Company Logo"
+              width={40}
+              height={40}
+              className="rounded"
+            />
+          ),
+        },
+        {
+          label: "Name",
+          value: (
+            <>
+              {response.weburl ? (
+                <Link
+                  href={response.weburl}
+                  className="text-white hover:underline"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {response.name}
+                </Link>
+              ) : (
+                response.name
+              )}
+            </>
+          ),
+        },
         { label: "Country", value: response.country ?? "N/A" },
         { label: "Currency", value: response.currency ?? "USD" },
         { label: "Exchange", value: response.exchange ?? "N/A" },
@@ -79,7 +114,7 @@ const Details = () => {
 
       {isLoading ? (
         <>
-          {[...Array(7)].map((_, index) => (
+          {[...Array(8)].map((_, index) => (
             <div
               key={index}
               className="flex justify-between border-b border-gray-700 py-4"

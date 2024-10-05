@@ -8,7 +8,7 @@ export default function StocksPage() {
       <Titles />
       <div className="w-full flex flex-row mt-8">
         <div className="w-10/12 mr-5">
-          <div className="w-full h-96 pt-8">
+          <div className="w-full h-auto">
             <Chart />
           </div>
         </div>

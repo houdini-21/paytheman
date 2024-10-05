@@ -1,17 +1,16 @@
-"use client";
-import ReactApexChart from "react-apexcharts";
+import dynamic from "next/dynamic";
+const ReactApexChart = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+});
 import { CandlestickChartProps } from "./interfaces";
 
-export const CandlestickChart: React.FC<CandlestickChartProps> = ({
-  seriesData,
-}) => {
+export const CandlestickChart = ({ seriesData }: CandlestickChartProps) => {
   return (
-    <div id="chart">
+    <div id="w-full">
       <ReactApexChart
         options={{
           chart: {
             type: "candlestick",
-            height: 350,
             toolbar: {
               show: false,
             },
@@ -40,7 +39,7 @@ export const CandlestickChart: React.FC<CandlestickChartProps> = ({
         }}
         series={[{ data: seriesData }]}
         type="candlestick"
-        height={350}
+        height={500}
       />
     </div>
   );

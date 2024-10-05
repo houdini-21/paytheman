@@ -44,3 +44,11 @@ export const fetchHistoricalData = async ({
   const data = await response.json();
   return data.bars;
 };
+
+export const getQuoteData = async (symbol: string) => {
+  const response = await fetch(
+    `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
+  ).then((res) => res.json());
+
+  return response;
+};
