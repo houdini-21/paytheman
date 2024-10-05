@@ -13,8 +13,8 @@ const Titles = () => {
 
   return (
     <div>
-      <div className="w-full flex flex-row items-center">
-        <div className="w-10/12 mr-5">
+      <div className="w-full flex lg:flex-row flex-col items-center">
+        <div className="lg:w-10/12 lg:mr-5 w-full">
           <h2 className="text-3xl font-bold text-white">{stockName}</h2>
           <div className="flex flex-col">
             <p
@@ -46,7 +46,7 @@ const Titles = () => {
             </div>
           </div>
         </div>
-        <div className="w-2/12">
+        <div className="lg:w-2/12 w-full">
           <Form />
         </div>
       </div>

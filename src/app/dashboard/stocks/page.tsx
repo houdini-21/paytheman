@@ -4,15 +4,15 @@ import { Chart } from "./Components/Chart";
 
 export default function StocksPage() {
   return (
-    <div className="px-12">
+    <div className="lg:px-12 px-6">
       <Titles />
-      <div className="w-full flex flex-row mt-8">
-        <div className="w-10/12 mr-5">
-          <div className="w-full h-auto">
+      <div className="w-full flex lg:flex-row flex-col mt-8">
+        <div className="lg:w-10/12 lg:mr-5 w-full">
+          <div className="w-full h-[600px] lg:h-[500px]">
             <Chart />
           </div>
         </div>
-        <div className="w-2/12 bg-zinc-900 rounded-lg shadow-lg">
+        <div className="lg:w-2/12 bg-zinc-900 rounded-lg shadow-lg w-full">
           <Details />
         </div>
       </div>
