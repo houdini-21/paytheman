@@ -1,4 +1,4 @@
-import { FaPencilAlt, FaRegTrashAlt } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 interface TableProps {
   id: number;
@@ -8,9 +8,10 @@ interface TableProps {
 
 interface TablePropsList {
   tableItems: TableProps[];
+  deleteItem: (id: number) => void;
 }
 
-const Table = ({ tableItems }: TablePropsList) => {
+const Table = ({ tableItems, deleteItem }: TablePropsList) => {
   return (
     <table className="border-collapse w-full mt-4">
       <thead>
@@ -41,13 +42,8 @@ const Table = ({ tableItems }: TablePropsList) => {
             <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
               <button
                 type="button"
-                className="text-blue-500 hover:text-blue-600 text-xl"
-              >
-                <FaPencilAlt />
-              </button>
-              <button
-                type="button"
                 className="text-red-500 hove:text-red-600 pl-6 text-xl"
+                onClick={() => deleteItem(item.id)}
               >
                 <FaRegTrashAlt />
               </button>

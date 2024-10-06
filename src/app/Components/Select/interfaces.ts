@@ -13,4 +13,5 @@ export interface SelectComponentProps {
   selectedOption?: SelectComponentItem | null;
   stylesDefault?: Boolean;
   nameInput?: string;
+  value?: SelectComponentItem | null;
 }

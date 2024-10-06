@@ -1,8 +1,20 @@
 "use client";
+import { toast, ToastContainer } from "react-toastify";
+import { useAppDispatch, useAppSelector } from "@/Store";
+import { removeNotification } from "@/Store/Notification/notificationSlice";
 import Table from "./Components/Table";
 import Form from "./Components/Form";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function NotificationPage() {
+  const itemsList = useAppSelector((state) => state.notification.items);
+  const dispatch = useAppDispatch();
+
+  const onDeleteItem = (id: number) => {
+    dispatch(removeNotification(id));
+    toast.success("Notification removed successfully!");
+  };
+
   return (
     <div className="flex gap-8 p-8 h-[600px]">
       <div className="bg-gray-50 w-full p-8 rounded-lg shadow-lg text-black">
@@ -20,20 +32,21 @@ export default function NotificationPage() {
               <div className="flex flex-col">
                 <p className="text-lg">Active Notifications</p>
                 <Table
-                  tableItems={[
-                    { id: 1, companyName: "Apple", situation: "Price goes up" },
-                    {
-                      id: 2,
-                      companyName: "Tesla",
-                      situation: "Price goes down",
-                    },
-                  ]}
+                  tableItems={
+                    itemsList.map((item) => ({
+                      id: item.id,
+                      companyName: item.companyName.label,
+                      situation: item.situation.label,
+                    })) || []
+                  }
+                  deleteItem={onDeleteItem}
                 />
               </div>
             </div>
           </div>
         </div>
       </div>
+      <ToastContainer position="top-center" />
     </div>
   );
 }

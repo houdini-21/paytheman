@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { useFormik } from "formik";
+import { toast } from "react-toastify";
+import { useAppDispatch } from "@/Store";
+import { addNotification } from "@/Store/Notification/notificationSlice";
 import { SelectComponent } from "@/app/Components";
 import { getMarketSymbols } from "@/app/hooks/getMarketData";
 import { SelectComponentItem } from "@/app/Components/Select/interfaces";
@@ -8,6 +11,7 @@ const Form = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchParam, setSearchParam] = useState<string>("");
   const [options, setOptions] = useState<SelectComponentItem[]>([]);
+  const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -22,7 +26,27 @@ const Form = () => {
       price: "",
     },
     onSubmit: (values) => {
-      console.log(values);
+      if (
+        !values.companyName.value ||
+        !values.situation.value ||
+        !values.price
+      ) {
+        toast.error("Please fill all fields!");
+        return;
+      }
+      dispatch(
+        addNotification({
+          id: new Date().getTime(),
+          companyName: values.companyName,
+          situation: values.situation,
+          price: Number(values.price),
+        })
+      );
+
+      formik.resetForm();
+      formik.setFieldValue("companyName", null);
+      formik.setFieldValue("situation", null);
+      toast.success("Notification added successfully!");
     },
   });
 
@@ -48,9 +72,12 @@ const Form = () => {
           placeholder="Select a Company"
           nameInput="companyName"
           options={options}
+          selectedOption={formik.values.companyName}
           onChange={(selectedOption) => {
             formik.setFieldValue("companyName", selectedOption);
           }}
+          onInputChange={(value) => setSearchParam(value)}
+          isLoading={isLoading}
           stylesDefault
         />
       </div>
@@ -59,6 +86,7 @@ const Form = () => {
           label="Select a situation"
           placeholder="Select a situation"
           nameInput="situation"
+          selectedOption={formik.values.situation}
           options={[
             { value: "1", label: "Price goes up" },
             { value: "2", label: "Price goes down" },
