@@ -16,6 +16,13 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  Notification.requestPermission().then(function (permission) {
+    if (permission === "granted") {
+      console.log("Permiso de notificación concedido.");
+    } else {
+      console.log("Permiso de notificación denegado.");
+    }
+  });
   return (
     <div className="overflow-y-scroll w-screen h-screen antialiased text-white">
       <TopBar items={topBarItems} />
