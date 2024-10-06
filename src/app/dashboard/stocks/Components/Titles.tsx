@@ -3,8 +3,10 @@ import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import classNames from "classnames";
 import { useAppSelector } from "@/Store";
 import Form from "./Form";
+import useFinnhubWebSocket from "@/app/utils/finnhubWebSocket";
 
 const Titles = () => {
+  useFinnhubWebSocket("AAPL");
   const stockName = useAppSelector((state) => state.stock.label);
   const quoteDataPrice = useAppSelector((state) => state.stock.price) || 0;
   const quoteDataChange = useAppSelector((state) => state.stock.change) || 0;

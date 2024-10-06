@@ -1,27 +1,43 @@
+"use client";
 import { useEffect } from "react";
+import { messaging, getToken } from "./firebaseConfig"; // Importa tu configuración de Firebase
 
 interface Trade {
-  s: string; // Símbolo
-  p: number; // Precio
+  s: string;
+  p: number;
 }
 
 const useFinnhubWebSocket = (symbol: string) => {
   useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/firebase-messaging-sw.js")
+        .then((registration) => {
+          console.log("Service Worker registrado correctamente:", registration);
+        })
+        .catch((error) => {
+          console.error("Error registrando Service Worker:", error);
+        });
+    }
+
     if (Notification.permission !== "granted") {
       Notification.requestPermission().then((permission) => {
         if (permission === "granted") {
           console.log("Permiso de notificaciones concedido");
+          getFirebaseToken();
         } else {
           console.log("Permiso de notificaciones denegado");
         }
       });
+    } else {
+      getFirebaseToken();
     }
+
     const socket = new WebSocket(
       `wss://ws.finnhub.io?token=crvgfehr01qkji45k8tgcrvgfehr01qkji45k8u0`
     );
 
     socket.onopen = () => {
-      console.log("WebSocket connected");
       socket.send(
         JSON.stringify({ type: "subscribe", symbol: "BINANCE:BTCUSDT" })
       );
@@ -29,31 +45,47 @@ const useFinnhubWebSocket = (symbol: string) => {
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-
-      socket.close();
-
       if (data && data.data && data.type === "trade") {
         data.data.forEach((trade: Trade) => {
           sendPushNotification(trade);
           return;
         });
+        socket.close();
       }
     };
 
     socket.onclose = () => {
       console.log("WebSocket disconnected");
     };
-
-    return () => {
-      socket.close();
-    };
   }, [symbol]);
+
+  const getFirebaseToken = async () => {
+    try {
+      const token = await getToken(messaging, {
+        vapidKey:
+          "BNxJhM0SD6JzSBWgn7k-GgYRMKIJl3VtHhPhC2sCtIiZOOPjnki9dGqSMSsEQYh2GntDOxYRrfOzgQAz0eNfqls",
+      });
+      if (token) {
+        console.log("FCM Token:", token);
+      } else {
+        console.log("No se pudo obtener el token FCM.");
+      }
+    } catch (error) {
+      console.error("Error obteniendo el token FCM:", error);
+    }
+  };
 
   const sendPushNotification = (trade: Trade) => {
     if (Notification.permission === "granted") {
-      new Notification("New trade alert", {
-        body: `${trade.s} is now at $${trade.p}`,
-        icon: "/logo.png",
+      navigator.serviceWorker.ready.then((registration) => {
+        registration
+          .showNotification("Nuevo trade", {
+            body: `Symbol: ${trade.s}, Price: ${trade.p}`,
+            icon: "/logo.png",
+          })
+          .catch((error) => {
+            console.error("Error mostrando la notificación:", error);
+          });
       });
     }
   };
