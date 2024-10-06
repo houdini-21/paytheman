@@ -11,43 +11,60 @@ import {
 import { CandlestickChart, TimeframeButtons } from "@/app/Components";
 import { CandlestickChartItem } from "@/app/Components/QuoteChart/interfaces";
 
+const getDateRange = (timeframe: string) => {
+  let start;
+  let end;
+  let timeframeEp;
+
+  switch (timeframe) {
+    case "1D":
+      const today = moment().day();
+      if (today === 6 || today === 0) {
+        start = moment()
+          .subtract(today === 6 ? 1 : 2, "days")
+          .startOf("day")
+          .format();
+        end = moment()
+          .subtract(today === 6 ? 1 : 2, "days")
+          .endOf("day")
+          .format();
+      } else {
+        start = moment().subtract(1, "days").startOf("day").format();
+        end = moment().subtract(1, "days").endOf("day").format();
+      }
+      timeframeEp = "1H";
+      break;
+    case "1W":
+      start = moment().subtract(1, "weeks").startOf("day").format();
+      end = moment().subtract(2, "days").endOf("day").format();
+      timeframeEp = "1H";
+      break;
+    case "1M":
+      start = moment().subtract(1, "months").startOf("day").format();
+      end = moment().subtract(2, "days").endOf("day").format();
+      timeframeEp = "1D";
+      break;
+    case "1Y":
+      start = moment().subtract(1, "years").startOf("day").format();
+      end = moment().subtract(2, "days").endOf("day").format();
+      timeframeEp = "1W";
+      break;
+    default:
+      start = moment().subtract(2, "days").startOf("day").format();
+      end = moment().subtract(2, "days").endOf("day").format();
+      timeframeEp = "1H";
+      break;
+  }
+
+  return { start, end, timeframeEp };
+};
+
 export const Chart = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [timeframe, setTimeframe] = useState<string>("1D");
   const [dataStock, setDataStock] = useState<CandlestickChartItem[]>([]);
   const stockValue = useAppSelector((state) => state.stock.value);
   const dispatch = useAppDispatch();
-
-  const getDateRange = (timeframe: string) => {
-    const end = moment().subtract(1, "days").endOf("day").toISOString();
-    let start;
-    let timeframeEp;
-
-    switch (timeframe) {
-      case "1D":
-        start = moment().subtract(1, "days").startOf("day").toISOString();
-        timeframeEp = "1H";
-        break;
-      case "1W":
-        start = moment().subtract(1, "weeks").startOf("day").toISOString();
-        timeframeEp = "1H";
-        break;
-      case "1M":
-        start = moment().subtract(1, "months").startOf("day").toISOString();
-        timeframeEp = "1D";
-        break;
-      case "1Y":
-        start = moment().subtract(1, "years").startOf("day").toISOString();
-        timeframeEp = "1W";
-        break;
-      default:
-        start = moment().subtract(2, "days").startOf("day").toISOString();
-        timeframeEp = "1H";
-        break;
-    }
-
-    return { start, end, timeframeEp };
-  };
 
   const fetchStockData = async (timeframe: string, stockValue: string) => {
     setIsLoading(true);
