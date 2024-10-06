@@ -10,7 +10,7 @@ export const TopBar = ({ items }: { items: TopBarPropsItem[] }) => {
         <SiRobinhood className="text-3xl text-white" />
       </Link>
       <div
-        className="hidden top-navbar w-full lg:inline-flex lg:flex-grow lg:w-auto"
+        className="top-navbar w-full lg:inline-flex lg:flex-grow lg:w-auto mt-5 lg:mt-0"
         id="navigation"
       >
         <div className="flex-row ml-auto lg:w-auto w-full lg:items-center items-start flex h-auto">

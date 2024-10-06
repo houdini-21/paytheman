@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 interface Trade {
   s: string; // Símbolo
@@ -6,9 +6,16 @@ interface Trade {
 }
 
 const useFinnhubWebSocket = (symbol: string) => {
-  const [message, setMessage] = useState<Trade[] | null>(null);
-
   useEffect(() => {
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          console.log("Permiso de notificaciones concedido");
+        } else {
+          console.log("Permiso de notificaciones denegado");
+        }
+      });
+    }
     const socket = new WebSocket(
       `wss://ws.finnhub.io?token=crvgfehr01qkji45k8tgcrvgfehr01qkji45k8u0`
     );
@@ -22,10 +29,10 @@ const useFinnhubWebSocket = (symbol: string) => {
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
+
       socket.close();
 
-      if (data && data.data) {
-        setMessage(data.data);
+      if (data && data.data && data.type === "trade") {
         data.data.forEach((trade: Trade) => {
           sendPushNotification(trade);
           return;
@@ -50,8 +57,6 @@ const useFinnhubWebSocket = (symbol: string) => {
       });
     }
   };
-
-  return message;
 };
 
 export default useFinnhubWebSocket;

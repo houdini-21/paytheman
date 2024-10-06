@@ -63,10 +63,10 @@ const Form = () => {
 
   return (
     <form
-      className="flex flex-row w-full items-end justify-between mt-4 gap-4"
+      className="flex lg:flex-row flex-col w-full items-end justify-between mt-4 gap-4"
       onSubmit={formik.handleSubmit}
     >
-      <div className="w-4/12">
+      <div className="lg:w-4/12 w-full">
         <SelectComponent
           label="Select a Company"
           placeholder="Select a Company"
@@ -81,7 +81,7 @@ const Form = () => {
           stylesDefault
         />
       </div>
-      <div className="w-4/12">
+      <div className="lg:w-4/12 w-full">
         <SelectComponent
           label="Select a situation"
           placeholder="Select a situation"
@@ -97,7 +97,7 @@ const Form = () => {
           stylesDefault
         />
       </div>
-      <div className="w-3/12">
+      <div className="lg:w-3/12 w-full">
         <div className="flex flex-col my-2">
           <label className="text-black text-sm mb-1">Price</label>
           <input
@@ -110,10 +110,10 @@ const Form = () => {
           />
         </div>
       </div>
-      <div className="w-1/12">
+      <div className="lg:w-1/12 w-full">
         <button
           type="submit"
-          className="bg-blue-500 text-white rounded-lg w-24 py-2 mb-2"
+          className="bg-blue-500 text-white rounded-lg lg:w-24 py-2 mb-2 w-full"
         >
           Add
         </button>

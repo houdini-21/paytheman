@@ -16,7 +16,7 @@ export default function NotificationPage() {
   };
 
   return (
-    <div className="flex gap-8 p-8 h-[600px]">
+    <div className="flex lg:p-8 h-auto px-4 py-8 w-full">
       <div className="bg-gray-50 w-full p-8 rounded-lg shadow-lg text-black">
         <div>
           <h3 className="text-2xl font-bold mb-6">Notifications</h3>
