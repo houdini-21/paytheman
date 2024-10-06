@@ -10,6 +10,7 @@ export const TopBarItem = ({ name, path }: TopBarPropsItem) => {
   return (
     <Link
       href={path}
+      prefetch
       className="group text-white transition duration-300 font-bold hover:scale-110 ease-in-out mx-4"
     >
       {name}
