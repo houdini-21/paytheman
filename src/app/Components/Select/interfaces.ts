@@ -11,4 +11,6 @@ export interface SelectComponentProps {
   onInputChange?: (value: string) => void;
   isLoading?: boolean;
   selectedOption?: SelectComponentItem | null;
+  stylesDefault?: Boolean;
+  nameInput?: string;
 }

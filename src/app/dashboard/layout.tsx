@@ -6,8 +6,8 @@ const topBarItems = [
     path: "/dashboard/stocks",
   },
   {
-    name: "Settings",
-    path: "/dashboard/settings",
+    name: "Notifications",
+    path: "/dashboard/notification",
   },
 ];
 
