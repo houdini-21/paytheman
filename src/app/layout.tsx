@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Providers } from "@/Store/Providers";
+import { SiRobinhood } from "react-icons/si";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -18,6 +19,14 @@ export const metadata: Metadata = {
   title: "Pay the man",
   description: "Stocks dashboard",
 };
+
+const LoadingScreen = () => (
+  <div className="flex items-center justify-center h-screen">
+    <span className="text-[200px] text-white">
+      <SiRobinhood />
+    </span>
+  </div>
+);
 
 export default function RootLayout({
   children,
