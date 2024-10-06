@@ -16,7 +16,8 @@ export const SelectComponent = ({
       <label className="text-white text-sm mb-1">{label}</label>
       <Select
         options={options}
-        isSearchable={false}
+        isSearchable
+        isClearable={false}
         placeholder={placeholder}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onChange={onChange as any}
