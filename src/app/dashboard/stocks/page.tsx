@@ -1,8 +1,11 @@
+"use client";
 import Titles from "./Components/Titles";
 import Details from "./Components/Details";
 import { Chart } from "./Components/Chart";
+import useFinnhubWebSocket from "@/app/utils/finnhubWebSocket";
 
 export default function StocksPage() {
+  useFinnhubWebSocket("AAPL");
   return (
     <div className="lg:px-12 px-6">
       <Titles />
