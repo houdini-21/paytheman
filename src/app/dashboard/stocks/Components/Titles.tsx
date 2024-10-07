@@ -1,5 +1,5 @@
 "use client";
-import { FaArrowDown, FaArrowUp } from "react-icons/fa";
+import { FaArrowDown, FaArrowRight, FaArrowUp } from "react-icons/fa";
 import classNames from "classnames";
 import { useAppSelector } from "@/Store";
 import Form from "./Form";
@@ -41,10 +41,17 @@ const Titles = () => {
                 {quoteDataChange} ({Math.abs(quoteDataChangePercent).toFixed(2)}
                 %)
               </p>
-              {quoteDataChange > 0 ? (
+
+              {quoteDataChange > 0 && (
                 <FaArrowUp className="text-green-500 ml-2" />
-              ) : (
+              )}
+
+              {quoteDataChange < 0 && (
                 <FaArrowDown className="text-red-500 ml-2" />
+              )}
+
+              {quoteDataChange === 0 && (
+                <FaArrowRight className="text-gray-500 ml-2" />
               )}
             </div>
           </div>

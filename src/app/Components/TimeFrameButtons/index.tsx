@@ -5,6 +5,7 @@ export const TimeframeButtons = ({
   setActive,
 }: TimeframeButtonsProps) => {
   const buttons = [
+    { label: "Live", value: "live" },
     { label: "1D", value: "1D" },
     { label: "1W", value: "1W" },
     { label: "1M", value: "1M" },
