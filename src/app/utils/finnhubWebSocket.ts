@@ -34,7 +34,7 @@ const useFinnhubWebSocket = (symbol: string) => {
     }
 
     const socket = new WebSocket(
-      `wss://ws.finnhub.io?token=crvgfehr01qkji45k8tgcrvgfehr01qkji45k8u0`
+      `wss://ws.finnhub.io?token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
     );
 
     socket.onopen = () => {

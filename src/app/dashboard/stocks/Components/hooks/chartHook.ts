@@ -110,7 +110,7 @@ export const useStockData = (timeframe: string) => {
       setDataLine(null);
 
       const socket = new WebSocket(
-        `wss://ws.finnhub.io?token=crvgfehr01qkji45k8tgcrvgfehr01qkji45k8u0`
+        `wss://ws.finnhub.io?token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
       );
       socketRef.current = socket;
 
@@ -131,12 +131,11 @@ export const useStockData = (timeframe: string) => {
         const item = data.type === "trade" ? data.data[0] : null;
         if (item) {
           const itemTimestamp = item.t;
-          if (itemTimestamp - lastTimestamp >= 10000) {
+          if (itemTimestamp - lastTimestamp >= 5000) {
             lastTimestamp = itemTimestamp;
             const date = new Date(item.t);
             const today = new Date();
             const timeString = `${today.toLocaleDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-            console.log(firstPrice, "firstPrice");
 
             if (firstPrice === 0) {
               firstPrice = item.p;

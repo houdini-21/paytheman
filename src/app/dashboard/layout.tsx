@@ -1,4 +1,4 @@
-import { TopBar } from "@/app/Components";
+import { TopBar, PricesCardComponent } from "@/app/Components";
 
 const topBarItems = [
   {
@@ -22,6 +22,52 @@ export default function DashboardLayout({
       <div className="flex flex-row">
         <div className="p-2 w-full text-white">{children}</div>
       </div>
+      <PricesCardComponent
+        data={[
+          {
+            name: "BTC",
+            price: 40000,
+            percentage: 2.5,
+            change: 1000,
+          },
+          {
+            name: "BTC",
+            price: 40000,
+            percentage: 2.5,
+            change: 1000,
+          },
+          {
+            name: "BTC",
+            price: 40000,
+            percentage: 2.5,
+            change: 1000,
+          },
+          {
+            name: "BTC",
+            price: 40000,
+            percentage: 2.5,
+            change: 1000,
+          },
+          {
+            name: "BTC",
+            price: 40000,
+            percentage: 2.5,
+            change: 1000,
+          },
+          {
+            name: "BTC",
+            price: 40000,
+            percentage: 2.5,
+            change: 1000,
+          },
+          {
+            name: "BTC",
+            price: 40000,
+            percentage: 2.5,
+            change: 1000,
+          },
+        ]}
+      />
     </div>
   );
 }
