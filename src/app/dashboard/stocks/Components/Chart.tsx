@@ -28,6 +28,9 @@ const getDateRange = (timeframe: string) => {
           .subtract(today === 6 ? 1 : 2, "days")
           .endOf("day")
           .format();
+      } else if (today === 1) {
+        start = moment().subtract(3, "days").startOf("day").format();
+        end = moment().subtract(3, "days").endOf("day").format();
       } else {
         start = moment().subtract(1, "days").startOf("day").format();
         end = moment().subtract(1, "days").endOf("day").format();

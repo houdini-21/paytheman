@@ -62,10 +62,13 @@ export const fetchHistoricalData = async ({
   return data.bars;
 };
 
-export const getQuoteData = async (symbol: string) => {
-  const response = await fetch(
-    `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
-  ).then((res) => res.json());
+export const liveMarketData = async (symbol: string) => {
+  const socket = new WebSocket(
+    `wss://ws.finnhub.io?token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
+  );
+  socket.onopen = () => {
+    socket.send(JSON.stringify({ type: "subscribe", symbol }));
+  };
 
-  return response;
+  return socket;
 };

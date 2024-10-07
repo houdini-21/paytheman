@@ -6,12 +6,13 @@ import Form from "./Form";
 import useFinnhubWebSocket from "@/app/utils/finnhubWebSocket";
 
 const Titles = () => {
-  useFinnhubWebSocket("AAPL");
   const stockName = useAppSelector((state) => state.stock.label);
+  const stockValue = useAppSelector((state) => state.stock.value);
   const quoteDataPrice = useAppSelector((state) => state.stock.price) || 0;
   const quoteDataChange = useAppSelector((state) => state.stock.change) || 0;
   const quoteDataChangePercent =
     useAppSelector((state) => state.stock.changePercent) || 0;
+  useFinnhubWebSocket(stockValue);
 
   return (
     <div>

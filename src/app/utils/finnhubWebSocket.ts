@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { messaging, getToken } from "./firebaseConfig"; // Importa tu configuración de Firebase
+import { messaging, getToken } from "./firebaseConfig";
 
 interface Trade {
   s: string;
@@ -38,9 +38,7 @@ const useFinnhubWebSocket = (symbol: string) => {
     );
 
     socket.onopen = () => {
-      socket.send(
-        JSON.stringify({ type: "subscribe", symbol: "BINANCE:BTCUSDT" })
-      );
+      socket.send(JSON.stringify({ type: "subscribe", symbol }));
     };
 
     socket.onmessage = (event) => {
