@@ -64,7 +64,6 @@ export const useStockData = (timeframe: string) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [dataStock, setDataStock] = useState<CandlestickChartItem[]>([]);
   const [dataLine, setDataLine] = useState<LineChartProps | null>(null);
-  const [firstPrice, setFirstPrice] = useState<number>(0);
   const stockValue = useAppSelector((state) => state.stock.value);
   const dispatch = useAppDispatch();
   const socketRef = useRef<WebSocket | null>(null);
@@ -116,6 +115,7 @@ export const useStockData = (timeframe: string) => {
       socketRef.current = socket;
 
       let lastTimestamp = 0;
+      let firstPrice = 0;
 
       socket.onopen = () => {
         socket.send(
@@ -136,9 +136,10 @@ export const useStockData = (timeframe: string) => {
             const date = new Date(item.t);
             const today = new Date();
             const timeString = `${today.toLocaleDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+            console.log(firstPrice, "firstPrice");
 
             if (firstPrice === 0) {
-              setFirstPrice(item.p);
+              firstPrice = item.p;
             }
             setDataLine((prev) => {
               if (prev) {
