@@ -110,7 +110,7 @@ export const useStockData = (timeframe: string) => {
       setDataLine(null);
 
       const socket = new WebSocket(
-        `wss://ws.finnhub.io?token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
+        `wss://ws.finnhub.io?token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY_WS}`
       );
       socketRef.current = socket;
 

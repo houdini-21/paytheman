@@ -2,18 +2,14 @@
 import { FaArrowDown, FaArrowRight, FaArrowUp } from "react-icons/fa";
 import classNames from "classnames";
 import { useAppSelector } from "@/Store";
-import useFinnhubWebSocket from "@/app/utils/finnhubWebSocket";
 import { Form } from "../Form";
 
 export const Titles = () => {
   const stockName = useAppSelector((state) => state.stock.label);
-  const stockValue = useAppSelector((state) => state.stock.value);
   const quoteDataPrice = useAppSelector((state) => state.stock.price) || 0;
   const quoteDataChange = useAppSelector((state) => state.stock.change) || 0;
   const quoteDataChangePercent =
     useAppSelector((state) => state.stock.changePercent) || 0;
-  const notificationList = useAppSelector((state) => state.notification.items);
-  useFinnhubWebSocket(stockValue, notificationList);
 
   return (
     <div>

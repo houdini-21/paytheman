@@ -1,5 +1,6 @@
 "use client";
 import { useEffect } from "react";
+import { useAppSelector } from "@/Store";
 import { SelectComponentItem } from "../Components/Select/interfaces";
 import { messaging, getToken } from "./firebaseConfig";
 
@@ -16,10 +17,9 @@ interface NotificationStateItem {
   price: number;
 }
 
-const useFinnhubWebSocket = (
-  symbol: string,
-  notificationList: NotificationStateItem[]
-) => {
+const useWebSocket = () => {
+  const notificationList = useAppSelector((state) => state.notification.items);
+
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
@@ -29,6 +29,15 @@ const useFinnhubWebSocket = (
         })
         .catch((error) => {
           console.error("Error registrando Service Worker:", error);
+        });
+
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then((registration) => {
+          console.log("Service Worker registrado con éxito:", registration);
+        })
+        .catch((error) => {
+          console.log("Error en el registro del Service Worker:", error);
         });
     }
 
@@ -46,10 +55,15 @@ const useFinnhubWebSocket = (
     }
 
     const socket = new WebSocket(
-      `wss://ws.finnhub.io?token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
+      `wss://ws.finnhub.io?token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY_WS}`
     );
 
     socket.onopen = () => {
+      if (notificationList.length === 0) {
+        console.log("No notifications to subscribe");
+        socket.close();
+        return;
+      }
       notificationList.forEach((notification) => {
         socket.send(
           JSON.stringify({
@@ -74,7 +88,7 @@ const useFinnhubWebSocket = (
       console.log("WebSocket disconnected");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [symbol]);
+  }, [notificationList]);
 
   const getFirebaseToken = async () => {
     try {
@@ -128,4 +142,4 @@ const useFinnhubWebSocket = (
   };
 };
 
-export default useFinnhubWebSocket;
+export default useWebSocket;

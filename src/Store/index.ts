@@ -25,12 +25,13 @@ const persistedNotificationReducer = persistReducer(
   persistConfig,
   notificationReducer
 );
+const persistedCardReducer = persistReducer(persistConfig, cardReducer);
 
 export const store = configureStore({
   reducer: {
     stock: persistedStockReducer,
     notification: persistedNotificationReducer,
-    card: cardReducer,
+    card: persistedCardReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

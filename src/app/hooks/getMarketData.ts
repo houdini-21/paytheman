@@ -62,20 +62,9 @@ export const fetchHistoricalData = async ({
   return data.bars;
 };
 
-export const liveMarketData = async (symbol: string) => {
-  const socket = new WebSocket(
-    `wss://ws.finnhub.io?token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
-  );
-  socket.onopen = () => {
-    socket.send(JSON.stringify({ type: "subscribe", symbol }));
-  };
-
-  return socket;
-};
-
 export const marketStatus = async () => {
   const response = await fetch(
-    `https://finnhub.io/api/v1/stock/market/status?token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
+    `https://finnhub.io/api/v1/stock/market-status?exchange=US&token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
   ).then((res) => res.json());
 
   return response;
