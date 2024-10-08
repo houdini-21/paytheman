@@ -9,6 +9,10 @@ const topBarItems = [
     name: "Notifications",
     path: "/dashboard/notification",
   },
+  {
+    name: "Settings",
+    path: "/dashboard/settings",
+  },
 ];
 
 export default function DashboardLayout({

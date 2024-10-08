@@ -13,6 +13,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import stockReducer from "./Stock/stockSlice";
 import notificationReducer from "./Notification/notificationSlice";
+import cardReducer from "./Card/cardSlice";
 
 const persistConfig = {
   key: "root",
@@ -29,6 +30,7 @@ export const store = configureStore({
   reducer: {
     stock: persistedStockReducer,
     notification: persistedNotificationReducer,
+    card: cardReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
