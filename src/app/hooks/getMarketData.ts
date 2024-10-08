@@ -72,3 +72,11 @@ export const liveMarketData = async (symbol: string) => {
 
   return socket;
 };
+
+export const marketStatus = async () => {
+  const response = await fetch(
+    `https://finnhub.io/api/v1/stock/market/status?token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
+  ).then((res) => res.json());
+
+  return response;
+};

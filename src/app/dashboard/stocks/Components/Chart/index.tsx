@@ -8,10 +8,12 @@ import {
   LineChart,
 } from "@/app/Components";
 import { useStockData } from "./hooks/useChartHook";
+import { marketStatus } from "@/app/hooks/getMarketData";
 
 export const Chart = () => {
   const [timeframe, setTimeframe] = useState<string>("1D");
   const { isLoading, dataStock, dataLine } = useStockData(timeframe);
+  const { isOpen } = marketStatus();
 
   return (
     <div className="w-full h-[500px]">
@@ -40,12 +42,19 @@ export const Chart = () => {
         {!isLoading && dataStock?.length > 0 && timeframe !== "live" && (
           <CandlestickChart seriesData={dataStock as CandlestickChartItem[]} />
         )}
-        {!isLoading && dataStock?.length > 0 && timeframe === "live" && (
-          <LineChart
-            seriesData={dataLine?.seriesData as number[]}
-            categories={dataLine?.categories as string[]}
-          />
-        )}
+        {!isLoading &&
+          dataStock?.length > 0 &&
+          timeframe === "live" &&
+          (isOpen ? (
+            <LineChart
+              seriesData={dataLine?.seriesData as number[]}
+              categories={dataLine?.categories as string[]}
+            />
+          ) : (
+            <div className="flex justify-center items-center h-[540px] bg-zinc-900 rounded-lg">
+              <span className="text-white">Market is closed</span>
+            </div>
+          ))}
         {!isLoading && !dataStock && (
           <div className="flex justify-center items-center h-[540px] bg-zinc-900 rounded-lg">
             <span className="text-white">No data available</span>
