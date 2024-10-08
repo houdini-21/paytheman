@@ -2,10 +2,10 @@
 import { FaArrowDown, FaArrowRight, FaArrowUp } from "react-icons/fa";
 import classNames from "classnames";
 import { useAppSelector } from "@/Store";
-import Form from "./Form";
 import useFinnhubWebSocket from "@/app/utils/finnhubWebSocket";
+import { Form } from "../Form";
 
-const Titles = () => {
+export const Titles = () => {
   const stockName = useAppSelector((state) => state.stock.label);
   const stockValue = useAppSelector((state) => state.stock.value);
   const quoteDataPrice = useAppSelector((state) => state.stock.price) || 0;
@@ -64,5 +64,3 @@ const Titles = () => {
     </div>
   );
 };
-
-export default Titles;

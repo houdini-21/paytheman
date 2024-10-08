@@ -1,9 +1,8 @@
 "use client";
 import { toast, ToastContainer } from "react-toastify";
-import { removeCard } from "@/Store/Card/cardSlice";
 import { useAppDispatch, useAppSelector } from "@/Store";
-import Table from "./Components/Table";
-import Form from "./Components/Form";
+import { removeCard } from "@/Store/Card/cardSlice";
+import { Form, Table } from "./Components";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function SettingsPage() {

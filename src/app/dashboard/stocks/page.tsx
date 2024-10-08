@@ -1,6 +1,4 @@
-import Titles from "./Components/Titles";
-import Details from "./Components/Details";
-import { Chart } from "./Components/Chart";
+import { Chart, Details, Titles } from "./Components";
 
 export default async function StocksPage() {
   return (

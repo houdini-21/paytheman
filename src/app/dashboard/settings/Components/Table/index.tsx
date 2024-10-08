@@ -3,8 +3,6 @@ import { FaRegTrashAlt } from "react-icons/fa";
 interface TableProps {
   id: number;
   companyName: string;
-  situation: string;
-  price: number;
 }
 
 interface TablePropsList {
@@ -12,7 +10,7 @@ interface TablePropsList {
   deleteItem: (id: number) => void;
 }
 
-const Table = ({ tableItems, deleteItem }: TablePropsList) => {
+export const Table = ({ tableItems, deleteItem }: TablePropsList) => {
   return (
     <div className="overflow-x-auto">
       <table className="border-collapse table-auto w-full mt-4">
@@ -55,5 +53,3 @@ const Table = ({ tableItems, deleteItem }: TablePropsList) => {
     </div>
   );
 };
-
-export default Table;

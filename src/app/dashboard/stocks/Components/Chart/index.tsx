@@ -7,7 +7,7 @@ import {
   CandlestickChart,
   LineChart,
 } from "@/app/Components";
-import { useStockData } from "./hooks/chartHook";
+import { useStockData } from "./hooks/useChartHook";
 
 export const Chart = () => {
   const [timeframe, setTimeframe] = useState<string>("1D");

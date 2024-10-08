@@ -6,7 +6,7 @@ import { SelectComponent } from "@/app/Components";
 import { getMarketSymbols } from "@/app/hooks/getMarketData";
 import { SelectComponentItem } from "@/app/Components/Select/interfaces";
 
-const Form = () => {
+export const Form = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchParam, setSearchParam] = useState<string>("");
   const [options, setOptions] = useState<SelectComponentItem[]>([]);
@@ -50,5 +50,3 @@ const Form = () => {
     </div>
   );
 };
-
-export default Form;

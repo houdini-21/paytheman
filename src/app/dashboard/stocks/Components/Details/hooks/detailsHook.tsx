@@ -1,11 +1,8 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import Skeleton from "react-loading-skeleton";
-import { useAppSelector } from "@/Store";
+import { useState, useEffect } from "react";
 import { getStockDetails } from "@/app/hooks/getMarketData";
-import "react-loading-skeleton/dist/skeleton.css";
-import Link from "next/link";
+import { useAppSelector } from "@/Store";
 import Image from "next/image";
+import Link from "next/link";
 
 interface TableRowProps {
   label: string;
@@ -28,16 +25,7 @@ interface DetailsProps {
   weburl: string;
 }
 
-const TableRow = ({ label, value }: TableRowProps) => {
-  return (
-    <div className="flex justify-between items-center border-b border-gray-700 py-4">
-      <span className="text-gray-400">{label}</span>
-      <span className="text-white">{value}</span>
-    </div>
-  );
-};
-
-const Details = () => {
+export const useStockDetails = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [details, setDetails] = useState<TableRowProps[]>([]);
   const stockValue = useAppSelector((state) => state.stock.value);
@@ -54,6 +42,7 @@ const Details = () => {
       }).format(
         response.marketCapitalization ? response.marketCapitalization : 0
       );
+
       const data = [
         {
           label: "Logo",
@@ -107,39 +96,5 @@ const Details = () => {
     fetchStockDetails();
   }, [stockValue]);
 
-  return (
-    <div className="text-sm w-full max-w-md mx-auto rounded-lg p-6">
-      <span className="text-white text-xl font-bold mb-5 block">
-        Company Details:
-      </span>
-
-      {isLoading ? (
-        <>
-          {[...Array(8)].map((_, index) => (
-            <div
-              key={index}
-              className="flex justify-between border-b border-gray-700 py-4"
-            >
-              <Skeleton
-                width={100}
-                baseColor="#3a3a3a"
-                highlightColor="#565656"
-              />
-              <Skeleton
-                width={150}
-                baseColor="#3a3a3a"
-                highlightColor="#565656"
-              />
-            </div>
-          ))}
-        </>
-      ) : (
-        details.map((detail, index) => (
-          <TableRow key={index} label={detail.label} value={detail.value} />
-        ))
-      )}
-    </div>
-  );
+  return { isLoading, details };
 };
-
-export default Details;
