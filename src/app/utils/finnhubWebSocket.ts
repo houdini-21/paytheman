@@ -1,5 +1,6 @@
 "use client";
 import { useEffect } from "react";
+import { SelectComponentItem } from "../Components/Select/interfaces";
 import { messaging, getToken } from "./firebaseConfig";
 
 interface Trade {
@@ -7,7 +8,18 @@ interface Trade {
   p: number;
 }
 
-const useFinnhubWebSocket = (symbol: string) => {
+interface NotificationStateItem {
+  id: number;
+  companyName: SelectComponentItem;
+  companySymbol: string;
+  situation: SelectComponentItem;
+  price: number;
+}
+
+const useFinnhubWebSocket = (
+  symbol: string,
+  notificationList: NotificationStateItem[]
+) => {
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
@@ -33,28 +45,34 @@ const useFinnhubWebSocket = (symbol: string) => {
       getFirebaseToken();
     }
 
-    // const socket = new WebSocket(
-    //   `wss://ws.finnhub.io?token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
-    // );
+    const socket = new WebSocket(
+      `wss://ws.finnhub.io?token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
+    );
 
-    // socket.onopen = () => {
-    //   socket.send(JSON.stringify({ type: "subscribe", symbol }));
-    // };
+    socket.onopen = () => {
+      notificationList.forEach((notification) => {
+        socket.send(
+          JSON.stringify({
+            type: "subscribe",
+            symbol: notification.companySymbol,
+          })
+        );
+      });
+    };
 
-    // socket.onmessage = (event) => {
-    //   const data = JSON.parse(event.data);
-    //   if (data && data.data && data.type === "trade") {
-    //     data.data.forEach((trade: Trade) => {
-    //       sendPushNotification(trade);
-    //       return;
-    //     });
-    //     // socket.close();
-    //   }
-    // };
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
 
-    // socket.onclose = () => {
-    //   console.log("WebSocket disconnected");
-    // };
+      if (data && data.data && data.type === "trade") {
+        data.data.forEach((trade: Trade) => {
+          checkPriceAlert(trade, notificationList);
+        });
+      }
+    };
+
+    socket.onclose = () => {
+      console.log("WebSocket disconnected");
+    };
   }, [symbol]);
 
   const getFirebaseToken = async () => {
@@ -73,12 +91,32 @@ const useFinnhubWebSocket = (symbol: string) => {
     }
   };
 
-  const sendPushNotification = (trade: Trade) => {
+  const checkPriceAlert = (
+    trade: Trade,
+    notificationList: NotificationStateItem[]
+  ) => {
+    notificationList.forEach((notification) => {
+      if (
+        notification.companySymbol === trade.s &&
+        ((notification.situation.value === "up" &&
+          trade.p >= notification.price) ||
+          (notification.situation.value === "down" &&
+            trade.p <= notification.price))
+      ) {
+        sendPushNotification(trade, notification);
+      }
+    });
+  };
+
+  const sendPushNotification = (
+    trade: Trade,
+    notification: NotificationStateItem
+  ) => {
     if (Notification.permission === "granted") {
       navigator.serviceWorker.ready.then((registration) => {
         registration
-          .showNotification("Nuevo trade", {
-            body: `Symbol: ${trade.s}, Price: ${trade.p}`,
+          .showNotification(`Alert for ${notification.companyName.label}`, {
+            body: `Symbol: ${trade.s}, Price: ${trade.p} reached your target of ${notification.price}`,
             icon: "/logo.png",
           })
           .catch((error) => {

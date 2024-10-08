@@ -12,7 +12,8 @@ const Titles = () => {
   const quoteDataChange = useAppSelector((state) => state.stock.change) || 0;
   const quoteDataChangePercent =
     useAppSelector((state) => state.stock.changePercent) || 0;
-  useFinnhubWebSocket(stockValue);
+  const notificationList = useAppSelector((state) => state.notification.items);
+  useFinnhubWebSocket(stockValue, notificationList);
 
   return (
     <div>
