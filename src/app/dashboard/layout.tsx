@@ -1,6 +1,4 @@
-"use client";
 import { TopBar, PricesCardComponent } from "@/app/Components";
-// import useWebSocket from "@/app/utils/webSocket";
 
 const topBarItems = [
   {
@@ -22,7 +20,6 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // useWebSocket();
   return (
     <div className="overflow-y-scroll w-screen h-screen antialiased text-white">
       <TopBar items={topBarItems} />

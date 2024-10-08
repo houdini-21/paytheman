@@ -20,39 +20,7 @@ import { messaging, getToken } from "./firebaseConfig";
 const useWebSocket = () => {
   const notificationList = useAppSelector((state) => state.notification.items);
 
-  useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("/firebase-messaging-sw.js")
-        .then((registration) => {
-          console.log("Service Worker registrado correctamente:", registration);
-        })
-        .catch((error) => {
-          console.error("Error registrando Service Worker:", error);
-        });
 
-      navigator.serviceWorker
-        .register("/sw.js")
-        .then((registration) => {
-          console.log("Service Worker registrado con éxito:", registration);
-        })
-        .catch((error) => {
-          console.log("Error en el registro del Service Worker:", error);
-        });
-    }
-
-    if (Notification.permission !== "granted") {
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          console.log("Permiso de notificaciones concedido");
-          getFirebaseToken();
-        } else {
-          console.log("Permiso de notificaciones denegado");
-        }
-      });
-    } else {
-      getFirebaseToken();
-    }
 
     // const socket = new WebSocket(
     //   `wss://ws.finnhub.io?token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY_WS}`
@@ -90,21 +58,6 @@ const useWebSocket = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notificationList]);
 
-  const getFirebaseToken = async () => {
-    try {
-      const token = await getToken(messaging, {
-        vapidKey:
-          "BNxJhM0SD6JzSBWgn7k-GgYRMKIJl3VtHhPhC2sCtIiZOOPjnki9dGqSMSsEQYh2GntDOxYRrfOzgQAz0eNfqls",
-      });
-      if (token) {
-        console.log("FCM Token:", token);
-      } else {
-        console.log("No se pudo obtener el token FCM.");
-      }
-    } catch (error) {
-      console.error("Error obteniendo el token FCM:", error);
-    }
-  };
 
   // const checkPriceAlert = (
   //   trade: Trade,
