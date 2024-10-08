@@ -67,7 +67,7 @@ export const useStockDetails = () => {
               {response.weburl ? (
                 <Link
                   href={response.weburl}
-                  className="text-white hover:underline"
+                  className="dark:text-white hover:underline text-slate-800"
                   target="_blank"
                   rel="noreferrer"
                 >

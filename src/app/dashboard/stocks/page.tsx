@@ -10,7 +10,7 @@ export default async function StocksPage() {
             <Chart />
           </div>
         </div>
-        <div className="lg:w-2/12 bg-zinc-900 rounded-lg shadow-lg w-full">
+        <div className="lg:w-2/12 dark:bg-zinc-900 bg-gray-100 rounded-lg shadow-lg w-full">
           <Details />
         </div>
       </div>

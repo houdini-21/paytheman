@@ -12,8 +12,20 @@ interface TableRowProps {
 const TableRow = ({ label, value }: TableRowProps) => {
   return (
     <div className="flex justify-between items-center border-b border-gray-700 py-4">
-      <span className="text-gray-400">{label}</span>
-      <span className="text-white">{value}</span>
+      <span
+        className="dark:text-gray-400
+        text-slate-800
+      "
+      >
+        {label}
+      </span>
+      <span
+        className="dark:text-white
+      text-slate-800
+      "
+      >
+        {value}
+      </span>
     </div>
   );
 };
@@ -23,7 +35,7 @@ export const Details = () => {
 
   return (
     <div className="text-sm w-full max-w-md mx-auto rounded-lg p-6">
-      <span className="text-white text-xl font-bold mb-5 block">
+      <span className="dark:text-white text-slate-800 text-xl font-bold mb-5 block">
         Company Details:
       </span>
 
@@ -36,13 +48,29 @@ export const Details = () => {
             >
               <Skeleton
                 width={100}
-                baseColor="#3a3a3a"
-                highlightColor="#565656"
+                baseColor={
+                  window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "#3a3a3a"
+                    : "#f3f3f3"
+                }
+                highlightColor={
+                  window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "#565656"
+                    : "#e5e5e5"
+                }
               />
               <Skeleton
                 width={150}
-                baseColor="#3a3a3a"
-                highlightColor="#565656"
+                baseColor={
+                  window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "#3a3a3a"
+                    : "#f3f3f3"
+                }
+                highlightColor={
+                  window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "#565656"
+                    : "#e5e5e5"
+                }
               />
             </div>
           ))}

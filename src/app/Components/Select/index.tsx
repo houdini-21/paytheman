@@ -17,7 +17,9 @@ export const SelectComponent = ({
     <div className="w-full flex flex-col my-2">
       <label
         className={
-          stylesDefault ? "text-black text-sm mb-1" : "text-white text-sm mb-1"
+          stylesDefault
+            ? "text-black text-sm mb-1"
+            : "dark:text-white text-slate-800 text-sm mb-1"
         }
       >
         {label}
@@ -54,7 +56,7 @@ export const SelectComponent = ({
                 }),
                 input: (base) => ({
                   ...base,
-                  color: "#FFFFFF", // Letras blancas cuando escribes
+                  color: "#FFFFFF",
                 }),
                 singleValue: (base) => ({
                   ...base,

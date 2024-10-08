@@ -11,12 +11,12 @@ export const TopBarItem = ({ name, path }: TopBarPropsItem) => {
     <Link
       href={path}
       prefetch
-      className="group text-white transition duration-300 font-bold hover:scale-110 ease-in-out mx-4"
+      className="group dark:text-white text-slate-800 transition duration-300 font-bold hover:scale-110 ease-in-out mx-4"
     >
       {name}
       <span
         className={classNames(
-          "block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white",
+          "block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 dark:bg-white bg-slate-800",
           {
             "max-w-full": path === currentPath,
           }

@@ -25,8 +25,16 @@ export const Chart = () => {
             count={1}
             height={500}
             width={"100%"}
-            baseColor="#3a3a3a"
-            highlightColor="#565656"
+            baseColor={
+              window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "#3a3a3a"
+                : "#f3f3f3"
+            }
+            highlightColor={
+              window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "#565656"
+                : "#e5e5e5"
+            }
           />
         )}
         {!isLoading && dataStock?.length > 0 && timeframe !== "live" && (

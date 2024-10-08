@@ -20,7 +20,7 @@ export const TimeframeButtons = ({
           onClick={() => setActive(button.value)}
           className={`px-3 py-2 rounded-md border transition-all duration-200 text-sm ${
             active === button.value
-              ? "bg-white text-black"
+              ? "dark:bg-white dark:text-black bg-zinc-700 text-white border-zinc-700"
               : "bg-transparent text-zinc-400 border-zinc-400 hover:bg-zinc-700 hover:text-white"
           }`}
         >

@@ -53,9 +53,9 @@ export const PriceCardItem = ({ name, symbol }: PriceCardItemProps) => {
   }, [symbol]);
 
   return (
-    <div className="bg-zinc-900 text-white p-6 rounded-md shadow-md flex justify-between items-center w-full">
-      <div className="flex flex-col w-3/12">
-        <span className="text-xl">{name}</span>
+    <div className="dark:bg-zinc-900 bg-gray-100 dark:text-white text-slate-800 p-4 rounded-md shadow-md flex lg:flex-row flex-col justify-between items-center w-full mt-8">
+      <div className="flex flex-col lg:w-3/12 w-full">
+        <span className="text-lg">{name}</span>
         <div
           className={classNames("flex items-center", {
             "text-red-500": change && change < 0,
@@ -75,7 +75,7 @@ export const PriceCardItem = ({ name, symbol }: PriceCardItemProps) => {
           <span className="text-md ml-2">({percentage?.toFixed(2)}%)</span>
         </div>
       </div>
-      <div className="text-lg font-semibold w-3/12 text-right">
+      <div className="text-lg font-semibold lg:w-3/12 w-full text-right">
         ${price?.toFixed(2)}
       </div>
     </div>

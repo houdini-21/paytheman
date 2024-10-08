@@ -46,6 +46,11 @@ export const Form = () => {
           setSearchParam(inputValue);
         }}
         placeholder="Search for a stock"
+        stylesDefault={
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? false
+            : true
+        }
       />
     </div>
   );
