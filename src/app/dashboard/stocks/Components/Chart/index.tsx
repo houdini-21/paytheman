@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import { CandlestickChartItem } from "@/app/Components/QuoteChart/interfaces";
 import {
@@ -13,7 +13,15 @@ import { marketStatus } from "@/app/hooks/getMarketData";
 export const Chart = () => {
   const [timeframe, setTimeframe] = useState<string>("1D");
   const { isLoading, dataStock, dataLine } = useStockData(timeframe);
-  const { isOpen } = marketStatus();
+  const [isOpen, setIsOpen] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const fetchMarketStatus = async () => {
+      const status = await marketStatus();
+      setIsOpen(status.isOpen);
+    };
+    fetchMarketStatus();
+  }, []);
 
   return (
     <div className="w-full h-[500px]">
