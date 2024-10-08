@@ -149,59 +149,6 @@ export const useStockData = (timeframe: string) => {
       return () => {
         webSocket.setOnMessageHandler(() => {});
       };
-      // if (socketRef.current) {
-      //   socketRef.current.close();
-      // }
-      // setDataLine(null);
-      // const socket = new WebSocket(
-      //   `wss://ws.finnhub.io?token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY_WS}`
-      // );
-      // socketRef.current = socket;
-      // let lastTimestamp = 0;
-      // let firstPrice = 0;
-      // socket.onopen = () => {
-      //   socket.send(
-      //     JSON.stringify({
-      //       type: "subscribe",
-      //       symbol: stockValue,
-      //     })
-      //   );
-      // };
-      // socket.onmessage = (event) => {
-      //   const data = JSON.parse(event.data);
-      //   const item = data.type === "trade" ? data.data[0] : null;
-      //   if (item && item.t - lastTimestamp >= 5000) {
-      //     lastTimestamp = item.t;
-      //     const date = new Date(item.t);
-      //     const today = new Date();
-      //     const timeString = `${today.toLocaleDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-      //     if (firstPrice === 0) {
-      //       firstPrice = item.p;
-      //     }
-      //     setDataLine((prev) => {
-      //       if (prev) {
-      //         return {
-      //           seriesData: [...prev.seriesData, item.p],
-      //           categories: [...prev.categories, timeString],
-      //         };
-      //       } else {
-      //         return {
-      //           seriesData: [item.p],
-      //           categories: [timeString],
-      //         };
-      //       }
-      //     });
-      //     const change = item.p - firstPrice;
-      //     const changePercent = (change / firstPrice) * 100;
-      //     dispatch(
-      //       setQuoteData({
-      //         price: item.p,
-      //         change: parseFloat(change.toFixed(2)),
-      //         changePercent: Math.round(changePercent * 100) / 100,
-      //       })
-      //     );
-      //   }
-      // };
     } else {
       fetchStockData();
     }

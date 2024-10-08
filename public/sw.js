@@ -7,7 +7,6 @@ self.addEventListener("install", (event) => {
         "/manifest.json",
         "/icons/icon-192x192.png",
         "/icons/icon-512x512.png",
-        // Agrega más archivos que desees cachear aquí
       ]);
     })
   );
@@ -36,7 +35,6 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-// Manejo de notificaciones push
 self.addEventListener("push", function (event) {
   const data = event.data ? event.data.json() : {};
   const title = data.title || "Notificación Push";
@@ -47,12 +45,4 @@ self.addEventListener("push", function (event) {
   };
 
   event.waitUntil(self.registration.showNotification(title, options));
-});
-
-// Manejo de clics en notificaciones
-self.addEventListener("notificationclick", function (event) {
-  event.notification.close();
-  event.waitUntil(
-    clients.openWindow("/") // Aquí puedes redirigir a una URL específica si lo deseas
-  );
 });
