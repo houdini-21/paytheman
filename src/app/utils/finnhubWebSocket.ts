@@ -33,28 +33,28 @@ const useFinnhubWebSocket = (symbol: string) => {
       getFirebaseToken();
     }
 
-    const socket = new WebSocket(
-      `wss://ws.finnhub.io?token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
-    );
+    // const socket = new WebSocket(
+    //   `wss://ws.finnhub.io?token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
+    // );
 
-    socket.onopen = () => {
-      socket.send(JSON.stringify({ type: "subscribe", symbol }));
-    };
+    // socket.onopen = () => {
+    //   socket.send(JSON.stringify({ type: "subscribe", symbol }));
+    // };
 
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data && data.data && data.type === "trade") {
-        data.data.forEach((trade: Trade) => {
-          sendPushNotification(trade);
-          return;
-        });
-        socket.close();
-      }
-    };
+    // socket.onmessage = (event) => {
+    //   const data = JSON.parse(event.data);
+    //   if (data && data.data && data.type === "trade") {
+    //     data.data.forEach((trade: Trade) => {
+    //       sendPushNotification(trade);
+    //       return;
+    //     });
+    //     // socket.close();
+    //   }
+    // };
 
-    socket.onclose = () => {
-      console.log("WebSocket disconnected");
-    };
+    // socket.onclose = () => {
+    //   console.log("WebSocket disconnected");
+    // };
   }, [symbol]);
 
   const getFirebaseToken = async () => {

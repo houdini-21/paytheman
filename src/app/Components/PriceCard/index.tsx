@@ -1,11 +1,18 @@
+"use client";
+import { useAppSelector } from "@/Store";
 import { PriceCardItem } from "./PriceCardItem";
-import { PriceCardItemProps } from "@/app/Components/PriceCard/interfaces";
 
-export const PricesCardComponent = ({ data }: PriceCardItemProps) => {
+export const PricesCardComponent = () => {
+  const notificationsItem = useAppSelector((state) => state.notification.items);
+
   return (
     <div className="flex lg:flex-row flex-col justify-between px-10 my-12 gap-4">
-      {data.map((item, index) => (
-        <PriceCardItem key={index} {...item} />
+      {notificationsItem.map((item, index) => (
+        <PriceCardItem
+          key={index}
+          symbol={item.companySymbol}
+          name={item.companyName.label}
+        />
       ))}
     </div>
   );

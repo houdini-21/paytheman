@@ -37,6 +37,7 @@ export default function NotificationPage() {
                       id: item.id,
                       companyName: item.companyName.label,
                       situation: item.situation.label,
+                      price: item.price,
                     })) || []
                   }
                   deleteItem={onDeleteItem}

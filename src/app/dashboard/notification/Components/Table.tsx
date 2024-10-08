@@ -4,6 +4,7 @@ interface TableProps {
   id: number;
   companyName: string;
   situation: string;
+  price: number;
 }
 
 interface TablePropsList {
@@ -24,6 +25,9 @@ const Table = ({ tableItems, deleteItem }: TablePropsList) => {
               Situation
             </th>
             <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+              Price
+            </th>
+            <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
               Actions
             </th>
           </tr>
@@ -41,6 +45,13 @@ const Table = ({ tableItems, deleteItem }: TablePropsList) => {
               <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static before:content-[attr(data-label)] before:text-gray-500 before:absolute before:left-4 lg:before:content-none">
                 <span className="lg:hidden font-bold">Situation: </span>
                 {item.situation}
+              </td>
+              <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static before:content-[attr(data-label)] before:text-gray-500 before:absolute before:left-4 lg:before:content-none">
+                <span className="lg:hidden font-bold">Price: </span>
+                {item.price.toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}
               </td>
               <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static before:content-[attr(data-label)] before:text-gray-500 before:absolute before:left-4 lg:before:content-none">
                 <span className="lg:hidden font-bold">Actions: </span>

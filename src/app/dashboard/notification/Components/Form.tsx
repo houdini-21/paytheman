@@ -38,6 +38,7 @@ const Form = () => {
         addNotification({
           id: new Date().getTime(),
           companyName: values.companyName,
+          companySymbol: values.companyName.value,
           situation: values.situation,
           price: Number(values.price),
         })
@@ -88,8 +89,8 @@ const Form = () => {
           nameInput="situation"
           selectedOption={formik.values.situation}
           options={[
-            { value: "1", label: "Price goes up" },
-            { value: "2", label: "Price goes down" },
+            { value: "up", label: "Price goes up" },
+            { value: "down", label: "Price goes down" },
           ]}
           onChange={(selectedOption) => {
             formik.setFieldValue("situation", selectedOption);

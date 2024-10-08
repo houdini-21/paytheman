@@ -129,42 +129,39 @@ export const useStockData = (timeframe: string) => {
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         const item = data.type === "trade" ? data.data[0] : null;
-        if (item) {
-          const itemTimestamp = item.t;
-          if (itemTimestamp - lastTimestamp >= 5000) {
-            lastTimestamp = itemTimestamp;
-            const date = new Date(item.t);
-            const today = new Date();
-            const timeString = `${today.toLocaleDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+        if (item && item.t - lastTimestamp >= 5000) {
+          lastTimestamp = item.t;
+          const date = new Date(item.t);
+          const today = new Date();
+          const timeString = `${today.toLocaleDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 
-            if (firstPrice === 0) {
-              firstPrice = item.p;
-            }
-            setDataLine((prev) => {
-              if (prev) {
-                return {
-                  seriesData: [...prev.seriesData, item.p],
-                  categories: [...prev.categories, timeString],
-                };
-              } else {
-                return {
-                  seriesData: [item.p],
-                  categories: [timeString],
-                };
-              }
-            });
-
-            const change = item.p - firstPrice;
-            const changePercent = (change / firstPrice) * 100;
-
-            dispatch(
-              setQuoteData({
-                price: item.p,
-                change: parseFloat(change.toFixed(2)),
-                changePercent: Math.round(changePercent * 100) / 100,
-              })
-            );
+          if (firstPrice === 0) {
+            firstPrice = item.p;
           }
+          setDataLine((prev) => {
+            if (prev) {
+              return {
+                seriesData: [...prev.seriesData, item.p],
+                categories: [...prev.categories, timeString],
+              };
+            } else {
+              return {
+                seriesData: [item.p],
+                categories: [timeString],
+              };
+            }
+          });
+
+          const change = item.p - firstPrice;
+          const changePercent = (change / firstPrice) * 100;
+
+          dispatch(
+            setQuoteData({
+              price: item.p,
+              change: parseFloat(change.toFixed(2)),
+              changePercent: Math.round(changePercent * 100) / 100,
+            })
+          );
         }
       };
 

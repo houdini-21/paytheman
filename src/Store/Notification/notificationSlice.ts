@@ -4,6 +4,7 @@ import { SelectComponentItem } from "@/app/Components/Select/interfaces";
 interface NotificationStateItem {
   id: number;
   companyName: SelectComponentItem;
+  companySymbol: string;
   situation: SelectComponentItem;
   price: number;
 }
