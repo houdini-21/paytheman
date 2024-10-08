@@ -1,6 +1,6 @@
 "use client";
 import { TopBar, PricesCardComponent } from "@/app/Components";
-// import useWebSocket from "../utils/webSocket";
+// import useWebSocket from "@/app/utils/webSocket";
 
 const topBarItems = [
   {

@@ -18,6 +18,7 @@ export const PriceCardItem = ({ name, symbol }: PriceCardItemProps) => {
 
   useEffect(() => {
     subscribeToSymbol(symbol);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [symbol]);
 
   return (
