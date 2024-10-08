@@ -73,6 +73,7 @@ const useFinnhubWebSocket = (
     socket.onclose = () => {
       console.log("WebSocket disconnected");
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [symbol]);
 
   const getFirebaseToken = async () => {
