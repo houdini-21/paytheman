@@ -27,8 +27,6 @@ export const PriceProvider = ({ children }: { children: React.ReactNode }) => {
   const webSocket = FinnhubWebSocket.getInstance();
 
   useEffect(() => {
-    let lastTimestamp = 0;
-
     const handlePriceUpdate = async (
       symbol: string,
       trade: {
@@ -63,10 +61,7 @@ export const PriceProvider = ({ children }: { children: React.ReactNode }) => {
       const data = JSON.parse(event.data);
       if (data.type === "trade" && data.data.length > 0) {
         const trade = data.data[0];
-        if (trade.t - lastTimestamp >= 1000) {
-          lastTimestamp = trade.t;
-          handlePriceUpdate(trade.s, trade);
-        }
+        handlePriceUpdate(trade.s, trade);
       }
     };
 

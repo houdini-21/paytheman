@@ -4,7 +4,7 @@ import { PriceCardItem } from "./PriceCardItem";
 import { PriceProvider } from "./provider";
 
 export const PricesCardComponent = () => {
-  const notificationsItem = useAppSelector((state) => state.card.items);
+  const notificationsItem = useAppSelector((state) => state.card.cards);
 
   return (
     <PriceProvider>

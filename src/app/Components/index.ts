@@ -4,3 +4,4 @@ export { SelectComponent } from "./Select";
 export { TimeframeButtons } from "./TimeFrameButtons";
 export { LoadingScreen } from "./LoadingScreen";
 export { PricesCardComponent } from "./PriceCard";
+export { NotificationsComponent } from "./Notifications";

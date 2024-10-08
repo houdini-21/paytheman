@@ -8,11 +8,11 @@ interface CardStateItem {
 }
 
 interface CardState {
-  items: CardStateItem[];
+  cards: CardStateItem[];
 }
 
 const initialState: CardState = {
-  items: [],
+  cards: [],
 };
 
 const cardSlice = createSlice({
@@ -20,11 +20,11 @@ const cardSlice = createSlice({
   initialState,
   reducers: {
     addCard: (state, action: PayloadAction<CardStateItem>) => {
-      state.items.push(action.payload);
+      state.cards.push(action.payload);
     },
 
     removeCard: (state, action: PayloadAction<number>) => {
-      state.items = state.items.filter((item) => item.id !== action.payload);
+      state.cards = state.cards.filter((item) => item.id !== action.payload);
     },
   },
 });

@@ -1,36 +1,9 @@
-"use client";
-import { useEffect } from "react";
 import Link from "next/link";
 import { SiRobinhood } from "react-icons/si";
 import { TopBarPropsItem } from "./interfaces";
 import { TopBarItem } from "./TopBarItem";
 
 export const TopBar = ({ items }: { items: TopBarPropsItem[] }) => {
-  useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("/firebase-messaging-sw.js")
-        .then((registration) => {
-          console.log("Service Worker registrado correctamente:", registration);
-        })
-        .catch((error) => {
-          console.error("Error registrando Service Worker:", error);
-        });
-    }
-
-    if (Notification.permission !== "granted") {
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          console.log("Permiso de notificaciones concedido");
-        } else {
-          console.log("Permiso de notificaciones denegado");
-        }
-      });
-    } else {
-      console.log("Permiso de notificaciones ya concedido");
-    }
-  }, []);
-
   return (
     <nav className="flex items-center py-3 px-12 flex-wrap">
       <Link href="#" className="p-2 mr-4 inline-flex items-center">

@@ -10,7 +10,7 @@ export const useFormLogic = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchParam, setSearchParam] = useState<string>("");
   const [options, setOptions] = useState<SelectComponentItem[]>([]);
-  const cardsList = useAppSelector((state) => state.card.items);
+  const cardsList = useAppSelector((state) => state.card.cards);
   const dispatch = useAppDispatch();
 
   const formik = useFormik({

@@ -48,7 +48,7 @@ const Table = ({ tableItems, deleteItem }: TablePropsList) => {
               </td>
               <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static before:content-[attr(data-label)] before:text-gray-500 before:absolute before:left-4 lg:before:content-none">
                 <span className="lg:hidden font-bold">Price: </span>
-                {item.price.toLocaleString("en-US", {
+                {item.price?.toLocaleString("en-US", {
                   style: "currency",
                   currency: "USD",
                 })}

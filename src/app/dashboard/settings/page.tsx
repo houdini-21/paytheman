@@ -6,7 +6,7 @@ import { Form, Table } from "./Components";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function SettingsPage() {
-  const itemsList = useAppSelector((state) => state.card.items);
+  const itemsList = useAppSelector((state) => state.card.cards);
   const dispatch = useAppDispatch();
 
   const onDeleteItem = (id: number) => {

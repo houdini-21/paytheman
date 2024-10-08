@@ -36,7 +36,7 @@ export default function NotificationPage() {
                     itemsList.map((item) => ({
                       id: item.id,
                       companyName: item.companyName.label,
-                      situation: item.situation.label,
+                      situation: item.situation?.label,
                       price: item.price,
                     })) || []
                   }

@@ -1,4 +1,8 @@
-import { TopBar, PricesCardComponent } from "@/app/Components";
+import {
+  TopBar,
+  PricesCardComponent,
+  NotificationsComponent,
+} from "@/app/Components";
 
 const topBarItems = [
   {
@@ -22,6 +26,7 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="overflow-y-scroll w-screen h-screen antialiased text-white">
+      <NotificationsComponent />
       <TopBar items={topBarItems} />
       <div className="flex flex-row">
         <div className="p-2 w-full text-white">{children}</div>
