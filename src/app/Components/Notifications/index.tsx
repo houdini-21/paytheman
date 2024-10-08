@@ -93,7 +93,7 @@ export const NotificationsComponent = () => {
   }, []);
 
   useEffect(() => {
-    let lastTimestamp = 0;
+    // let lastTimestamp = 0;
 
     itemsList.forEach((item) => {
       subscribeToSymbol(item.companySymbol);
@@ -105,7 +105,7 @@ export const NotificationsComponent = () => {
       if (data.type === "trade" && data.data.length > 0) {
         const trade = data.data[0];
         // if (trade.t - lastTimestamp >= 1000) {
-        lastTimestamp = trade.t;
+        // lastTimestamp = trade.t;
         checkPriceAlert(trade, itemsList);
         // }
       }
