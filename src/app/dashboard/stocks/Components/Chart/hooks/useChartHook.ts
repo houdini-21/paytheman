@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import moment from "moment";
 import { useAppDispatch, useAppSelector } from "@/Store";
 import { setQuoteData } from "@/Store/Stock/stockSlice";
