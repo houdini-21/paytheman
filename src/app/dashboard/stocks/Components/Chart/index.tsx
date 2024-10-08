@@ -19,7 +19,7 @@ export const Chart = () => {
     const fetchMarketStatus = async () => {
       const status = await marketStatus();
       console.log(status, "status");
-      setIsOpen(status.isOpen);
+      setIsOpen(true);
     };
     fetchMarketStatus();
   }, []);
