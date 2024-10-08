@@ -2,10 +2,10 @@ import withPWA from "next-pwa";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: true,
   compiler: {
-    removeConsole: process.env.NEXT_PUBLIC_NODE_ENV === "production",
+    removeConsole: process.env.NEXT_PUBLIC_NODE_ENV === "development",
   },
   images: {
     remotePatterns: [
@@ -20,9 +20,11 @@ const nextConfig = {
     ],
   },
 };
-export default withPWA({
-  dest: "public",
-  disable: process.env.NEXT_PUBLIC_NODE_ENV === "development",
-  register: true,
-  skipWaiting: true,
-})(nextConfig);
+// export default withPWA({
+//   dest: "public",
+//   disable: process.env.NEXT_PUBLIC_NODE_ENV === "development",
+//   register: true,
+//   skipWaiting: true,
+// })(nextConfig);
+
+export default nextConfig;
