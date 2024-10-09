@@ -93,7 +93,7 @@ export const NotificationsComponent = () => {
   }, []);
 
   useEffect(() => {
-    let lastUpdateTimestamps: Record<string, number> = {};
+    const lastUpdateTimestamps: Record<string, number> = {};
 
     itemsList.forEach((item) => {
       subscribeToSymbol(item.companySymbol);

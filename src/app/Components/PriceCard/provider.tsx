@@ -57,7 +57,7 @@ export const PriceProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
-    let lastUpdateTimestamps: Record<string, number> = {};
+    const lastUpdateTimestamps: Record<string, number> = {};
 
     const messageHandler = (event: MessageEvent) => {
       const data = JSON.parse(event.data);
