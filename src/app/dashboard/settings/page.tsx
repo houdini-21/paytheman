@@ -27,7 +27,7 @@ export default function SettingsPage() {
               </div>
               <hr className="my-8" />
               <div className="flex flex-col">
-                <p className="text-lg">Active Notifications</p>
+                <p className="text-lg">Active price cards</p>
                 <Table
                   tableItems={
                     itemsList.map((item) => ({

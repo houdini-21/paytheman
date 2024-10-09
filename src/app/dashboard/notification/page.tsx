@@ -30,7 +30,7 @@ export default function NotificationPage() {
               </div>
               <hr className="my-8" />
               <div className="flex flex-col">
-                <p className="text-lg">Active Notifications</p>
+                <p className="text-lg">Active notifications</p>
                 <Table
                   tableItems={
                     itemsList.map((item) => ({

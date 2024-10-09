@@ -34,6 +34,16 @@ export const useNotificationForm = () => {
         return;
       }
 
+      if (isNaN(Number(values.price))) {
+        toast.error("Price must be a number!");
+        return;
+      }
+
+      if (Number(values.price) < 0) {
+        toast.error("Price cannot be negative!");
+        return;
+      }
+
       dispatch(
         addNotification({
           id: new Date().getTime(),

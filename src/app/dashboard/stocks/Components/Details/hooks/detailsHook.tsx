@@ -84,7 +84,7 @@ export const useStockDetails = () => {
         { label: "Exchange", value: response.exchange ?? "N/A" },
         { label: "IPO Date", value: response.ipo ?? "N/A" },
         {
-          label: "Market Capitalization",
+          label: "Market capitalization",
           value: formattedMarketCap,
         },
         { label: "Industry", value: response.finnhubIndustry ?? "N/A" },

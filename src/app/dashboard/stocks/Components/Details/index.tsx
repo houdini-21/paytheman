@@ -36,7 +36,7 @@ export const Details = () => {
   return (
     <div className="text-sm w-full max-w-md mx-auto rounded-lg p-6">
       <span className="dark:text-white text-slate-800 text-xl font-bold mb-5 block">
-        Company Details:
+        Company details:
       </span>
 
       {isLoading ? (

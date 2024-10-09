@@ -1,6 +1,6 @@
 {
-  "name": "Pay the Man",
-  "short_name": "App",
+  "name": "Pay the man",
+  "short_name": "Pay the man",
   "description": "This is just a glimpse of what I can achieve; the best is yet to come.",
   "start_url": "/dashboard/stocks",
   "display": "standalone",
