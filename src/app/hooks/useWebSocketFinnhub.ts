@@ -5,6 +5,7 @@ type Subscription = {
 
 class FinnhubWebSocket {
   private static instance: FinnhubWebSocket | null = null; // Singleton instance
+  private messageHandlers: ((event: MessageEvent) => void)[] = [];
   private socket: WebSocket | null = null;
   private activeSubscriptions: Set<string>;
   private messageQueue: Subscription[];
@@ -115,9 +116,18 @@ class FinnhubWebSocket {
     }
   }
 
+  // public setOnMessageHandler(handler: (event: MessageEvent) => void) {
+  //   if (this.socket) {
+  //     this.socket.onmessage = handler;
+  //   }
+  // }
+
   public setOnMessageHandler(handler: (event: MessageEvent) => void) {
+    this.messageHandlers.push(handler);
     if (this.socket) {
-      this.socket.onmessage = handler;
+      this.socket.onmessage = (event: MessageEvent) => {
+        this.messageHandlers.forEach((h) => h(event));
+      };
     }
   }
 

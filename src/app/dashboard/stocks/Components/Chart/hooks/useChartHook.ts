@@ -104,15 +104,15 @@ export const useStockData = (timeframe: string) => {
 
   useEffect(() => {
     if (timeframe === "live") {
-      // let lastTimestamp = 0;
+      let lastTimestamp = 0;
       let firstPrice = 0;
       webSocket.subscribe(stockValue as string);
 
       const messageHandler = (event: MessageEvent) => {
         const data = JSON.parse(event.data);
         const item = data.type === "trade" ? data.data[0] : null;
-        if (item) {
-          // lastTimestamp = item.t;
+        if (item && item.t - lastTimestamp >= 5000) {
+          lastTimestamp = item.t;
           const date = new Date(item.t);
           const today = new Date();
           const timeString = `${today.toLocaleDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;

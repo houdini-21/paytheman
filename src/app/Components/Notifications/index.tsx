@@ -33,7 +33,7 @@ export const NotificationsComponent = () => {
       navigator.serviceWorker.ready.then((registration) => {
         registration
           .showNotification(`Alert for ${notification.companyName.label}`, {
-            body: `Symbol: ${trade.s}, Price: ${trade.p} reached your target of ${notification.price}`,
+            body: `Symbol: ${trade.s}, Price: ${trade.p} is ${notification.situation.label} than ${notification.price}`,
             icon: "/logo.png",
           })
           .catch((error) => {
@@ -93,21 +93,28 @@ export const NotificationsComponent = () => {
   }, []);
 
   useEffect(() => {
-    // let lastTimestamp = 0;
+    let lastUpdateTimestamps: Record<string, number> = {};
 
     itemsList.forEach((item) => {
       subscribeToSymbol(item.companySymbol);
-      console.log("Subscribed to:", item.companySymbol);
     });
 
     const messageHandler = (event: MessageEvent) => {
+      if (itemsList.length === 0) return;
       const data = JSON.parse(event.data);
+
       if (data.type === "trade" && data.data.length > 0) {
         const trade = data.data[0];
-        // if (trade.t - lastTimestamp >= 1000) {
-        // lastTimestamp = trade.t;
-        checkPriceAlert(trade, itemsList);
-        // }
+        const symbol = trade.s;
+        const currentTime = Date.now();
+
+        if (
+          !lastUpdateTimestamps[symbol] ||
+          currentTime - lastUpdateTimestamps[symbol] >= 5000
+        ) {
+          lastUpdateTimestamps[symbol] = currentTime;
+          checkPriceAlert(trade, itemsList);
+        }
       }
     };
 

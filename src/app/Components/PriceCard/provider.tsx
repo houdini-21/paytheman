@@ -57,17 +57,32 @@ export const PriceProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
+    let lastUpdateTimestamps: Record<string, number> = {};
+
     const messageHandler = (event: MessageEvent) => {
       const data = JSON.parse(event.data);
+
       if (data.type === "trade" && data.data.length > 0) {
         const trade = data.data[0];
-        handlePriceUpdate(trade.s, trade);
+        const currentTime = Date.now();
+
+        // Verificar si ha pasado al menos 5 segundos desde la última actualización
+        if (
+          !lastUpdateTimestamps[trade.s] ||
+          currentTime - lastUpdateTimestamps[trade.s] >= 5000
+        ) {
+          console.log("Actualizando precio de:", trade.s);
+          lastUpdateTimestamps[trade.s] = currentTime;
+          handlePriceUpdate(trade.s, trade);
+        }
       }
     };
 
+    // Asignar el manejador de mensajes del WebSocket
     webSocket.setOnMessageHandler(messageHandler);
 
     return () => {
+      // Limpiar el manejador de mensajes al desmontar el componente
       webSocket.setOnMessageHandler(() => {});
     };
   }, [webSocket]);
