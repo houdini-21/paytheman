@@ -3,10 +3,10 @@ import withPWA from "next-pwa";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  swcMinify: true,
-  compiler: {
-    removeConsole: process.env.NEXT_PUBLIC_NODE_ENV !== "development",
-  },
+  // swcMinify: true,
+  // compiler: {
+  //   removeConsole: process.env.NEXT_PUBLIC_NODE_ENV === "development",
+  // },
   images: {
     remotePatterns: [
       {
