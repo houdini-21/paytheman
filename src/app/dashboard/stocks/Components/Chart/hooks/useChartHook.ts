@@ -12,6 +12,12 @@ import {
 } from "@/app/Components/QuoteChart/interfaces";
 import FinnhubWebSocket from "@/app/hooks/useWebSocketFinnhub";
 
+/**
+ * Utility function to get the date range and appropriate timeframe for fetching historical stock data.
+ *
+ * @param timeframe - The timeframe selected by the user (e.g., "1D", "1W", "1M", "1Y").
+ * @returns An object containing the start date, end date, and timeframe epoch.
+ */
 const getDateRange = (timeframe: string) => {
   let start, end, timeframeEp;
 
@@ -61,14 +67,30 @@ const getDateRange = (timeframe: string) => {
   return { start, end, timeframeEp };
 };
 
+/**
+ * Custom hook to manage stock data fetching and WebSocket updates.
+ *
+ * @param timeframe - The selected timeframe for fetching data (e.g., "1D", "1W", "1M", "1Y", or "live").
+ * @returns An object containing the loading state, stock data for candlestick charts, and live data for line charts.
+ */
 export const useStockData = (timeframe: string) => {
+  /** Loading state while fetching stock data */
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  /** Candlestick chart data for the selected timeframe */
   const [dataStock, setDataStock] = useState<CandlestickChartItem[]>([]);
+  /** Line chart data for live stock updates */
   const [dataLine, setDataLine] = useState<LineChartProps | null>(null);
+  /** Selected stock symbol from the Redux store */
   const stockValue = useAppSelector((state) => state.stock.value);
+  /** Dispatch function to update the stock quote in the Redux store */
   const dispatch = useAppDispatch();
+  /** Singleton instance of the Finnhub WebSocket for real-time updates */
   const webSocket = FinnhubWebSocket.getInstance();
 
+  /**
+   * Fetch historical stock data for the selected timeframe.
+   * Formats the data for candlestick charts and dispatches the quote data to the Redux store.
+   */
   const fetchStockData = async () => {
     const { start, end, timeframeEp } = getDateRange(timeframe);
 
@@ -102,6 +124,10 @@ export const useStockData = (timeframe: string) => {
     setIsLoading(false);
   };
 
+  /**
+   * Effect to handle data fetching or WebSocket subscription based on the selected timeframe.
+   * If the "live" timeframe is selected, it subscribes to real-time WebSocket updates.
+   */
   useEffect(() => {
     if (timeframe === "live") {
       let lastTimestamp = 0;

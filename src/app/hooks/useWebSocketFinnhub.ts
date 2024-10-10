@@ -1,8 +1,14 @@
 type Subscription = {
+  /** Type of message, either "subscribe" or "unsubscribe" */
   type: string;
+  /** The stock symbol to subscribe/unsubscribe to/from */
   symbol: string;
 };
 
+/**
+ * Class representing a WebSocket connection to the Finnhub API.
+ * Implements a singleton pattern to ensure only one instance is used.
+ */
 class FinnhubWebSocket {
   private static instance: FinnhubWebSocket | null = null; // Singleton instance
   private messageHandlers: ((event: MessageEvent) => void)[] = [];
@@ -15,6 +21,10 @@ class FinnhubWebSocket {
   private reconnectDelay: number;
   private isReconnecting: boolean;
 
+  /**
+   * Private constructor for the singleton instance.
+   * Initializes state and establishes the WebSocket connection.
+   */
   private constructor() {
     this.activeSubscriptions = new Set();
     this.messageQueue = [];
@@ -27,7 +37,10 @@ class FinnhubWebSocket {
     this.connect();
   }
 
-  // Método estático para obtener la instancia singleton
+  /**
+   * Static method to retrieve the singleton instance.
+   * @returns The singleton instance of `FinnhubWebSocket`.
+   */
   public static getInstance(): FinnhubWebSocket {
     if (!FinnhubWebSocket.instance) {
       FinnhubWebSocket.instance = new FinnhubWebSocket();
@@ -35,6 +48,10 @@ class FinnhubWebSocket {
     return FinnhubWebSocket.instance;
   }
 
+  /**
+   * Establishes the WebSocket connection to Finnhub. Handles reconnections
+   * and ensures only one active connection.
+   */
   private connect() {
     if (
       this.socket &&
@@ -53,7 +70,7 @@ class FinnhubWebSocket {
       this.isSocketOpen = true;
       this.isReconnecting = false;
       this.reconnectAttempts = 0;
-      this.flushMessageQueue(); // Enviar los mensajes encolados
+      this.flushMessageQueue(); // Send any queued messages
     };
 
     this.socket.onclose = () => {
@@ -67,11 +84,17 @@ class FinnhubWebSocket {
       console.error("WebSocket error:", error);
       this.isSocketOpen = false;
       if (this.socket) {
-        this.socket.close(); // Cerrar explícitamente el socket en caso de error
+        this.socket.close(); // Explicitly close the socket on error
       }
     };
   }
 
+  /**
+   * Subscribes to a stock symbol on the WebSocket.
+   * If the WebSocket is not open, queues the subscription request.
+   *
+   * @param symbol - The stock symbol to subscribe to.
+   */
   public subscribe(symbol: string) {
     if (!this.activeSubscriptions.has(symbol)) {
       const subscriptionMessage: Subscription = {
@@ -91,6 +114,12 @@ class FinnhubWebSocket {
     }
   }
 
+  /**
+   * Unsubscribes from a stock symbol on the WebSocket.
+   * If the WebSocket is not open, queues the unsubscription request.
+   *
+   * @param symbol - The stock symbol to unsubscribe from.
+   */
   public unsubscribe(symbol: string) {
     if (this.activeSubscriptions.has(symbol)) {
       const unsubscriptionMessage: Subscription = {
@@ -110,12 +139,12 @@ class FinnhubWebSocket {
     }
   }
 
-  // public setOnMessageHandler(handler: (event: MessageEvent) => void) {
-  //   if (this.socket) {
-  //     this.socket.onmessage = handler;
-  //   }
-  // }
-
+  /**
+   * Registers a message handler for incoming WebSocket messages.
+   * Allows multiple handlers to be registered.
+   *
+   * @param handler - Function to handle incoming WebSocket messages.
+   */
   public setOnMessageHandler(handler: (event: MessageEvent) => void) {
     this.messageHandlers.push(handler);
     if (this.socket) {
@@ -125,6 +154,10 @@ class FinnhubWebSocket {
     }
   }
 
+  /**
+   * Handles reconnection logic if the WebSocket connection is lost.
+   * Retries up to the configured number of reconnection attempts.
+   */
   private reconnect() {
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
       this.reconnectAttempts++;
@@ -142,6 +175,10 @@ class FinnhubWebSocket {
     }
   }
 
+  /**
+   * Flushes the message queue, sending any queued subscription/unsubscription requests.
+   * This is called once the WebSocket connection is open.
+   */
   private flushMessageQueue() {
     while (this.messageQueue.length > 0 && this.isSocketOpen && this.socket) {
       const message = this.messageQueue.shift();

@@ -3,19 +3,31 @@ import { useAppSelector } from "@/Store";
 import FinnhubWebSocket from "@/app/hooks/useWebSocketFinnhub";
 
 interface PriceDetails {
+  /** The current price of the stock */
   price: number | null;
+  /** The change in price from the previous close */
   change: number | null;
+  /** The percentage change from the previous close */
   percentage: number | null;
+  /** The previous close price */
   closePrice: number | null;
 }
 
 interface PriceContextType {
+  /** Object holding price details for each symbol */
   prices: Record<string, PriceDetails>;
+  /** Function to subscribe to a stock symbol */
   subscribeToSymbol: (symbol: string) => void;
 }
 
+/** Context to hold and provide price data */
 const PriceContext = createContext<PriceContextType | null>(null);
 
+/**
+ * Hook to access the PriceContext
+ * @throws Will throw an error if used outside of a PriceProvider
+ * @returns The price context value
+ */
 export const usePriceContext = () => {
   const context = useContext(PriceContext);
   if (!context) {
@@ -24,21 +36,41 @@ export const usePriceContext = () => {
   return context;
 };
 
+/**
+ * Provider component for the PriceContext. It subscribes to stock symbols,
+ * listens for WebSocket price updates, and manages the price state.
+ *
+ * @param children - The child components that will have access to the context
+ */
 export const PriceProvider = ({ children }: { children: React.ReactNode }) => {
+  /** List of card items from the Redux store */
   const itemsList = useAppSelector((state) => state.card.cards);
+  /** Ref to hold the current items list */
   const itemsListRef = useRef(itemsList);
+  /** State to hold the price data for symbols */
   const [prices, setPrices] = useState<Record<string, PriceDetails>>({});
+  /** Ref to hold the current prices state */
   const pricesRef = useRef(prices);
+  /** Instance of the Finnhub WebSocket for handling connections */
   const webSocket = FinnhubWebSocket.getInstance();
 
+  /** Update items list reference when items list changes */
   useEffect(() => {
     itemsListRef.current = itemsList;
   }, [itemsList]);
 
+  /** Update prices reference when prices state changes */
   useEffect(() => {
     pricesRef.current = prices;
   }, [prices]);
 
+  /**
+   * Handles incoming trade data and updates the price state.
+   * Fetches the previous close price if not already available.
+   *
+   * @param symbol - The stock symbol being updated
+   * @param trade - The trade data containing price and time
+   */
   useEffect(() => {
     const handlePriceUpdate = async (
       symbol: string,
@@ -46,6 +78,8 @@ export const PriceProvider = ({ children }: { children: React.ReactNode }) => {
     ) => {
       const currentPrices = pricesRef.current;
 
+      // If the close price is already available, calculate the change and percentage
+      // Otherwise, fetch the close price and calculate the change and percentage
       if (currentPrices[symbol]) {
         const newPrice = trade.p;
         const newChange = newPrice - currentPrices[symbol].closePrice!;
@@ -88,8 +122,13 @@ export const PriceProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
+    /** Holds timestamps of the last update for each symbol to prevent frequent updates */
     const lastUpdateTimestamps: Record<string, number> = {};
 
+    /**
+     * Handles incoming WebSocket messages and processes trade updates.
+     * @param event - The WebSocket message event containing trade data
+     */
     const messageHandler = (event: MessageEvent) => {
       const data = JSON.parse(event.data);
 
@@ -116,17 +155,25 @@ export const PriceProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
+    /** Sets the WebSocket message handler */
     webSocket.setOnMessageHandler(messageHandler);
 
+    /** Cleanup the WebSocket message handler on unmount */
     return () => {
       webSocket.setOnMessageHandler(() => {});
     };
   }, [webSocket]);
 
+  /**
+   * Subscribes to a stock symbol using the WebSocket.
+   *
+   * @param symbol - The stock symbol to subscribe to.
+   */
   const subscribeToSymbol = (symbol: string) => {
     webSocket.subscribe(symbol);
   };
 
+  /** Provides the price data and subscription function to child components */
   return (
     <PriceContext.Provider value={{ prices, subscribeToSymbol }}>
       {children}

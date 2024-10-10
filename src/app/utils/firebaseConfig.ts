@@ -2,6 +2,9 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
+/**
+ * Firebase configuration object, using environment variables to securely store keys.
+ */
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -12,7 +15,14 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
+/**
+ * Initialize Firebase app instance using the provided configuration.
+ */
 const firebaseApp = initializeApp(firebaseConfig);
+
+/**
+ * Get the Firebase Cloud Messaging (FCM) instance for the initialized app.
+ */
 const messaging = getMessaging(firebaseApp);
 
 export { messaging, getToken, onMessage };
