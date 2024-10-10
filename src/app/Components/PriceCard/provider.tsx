@@ -47,7 +47,6 @@ export const PriceProvider = ({ children }: { children: React.ReactNode }) => {
       const currentPrices = pricesRef.current;
 
       if (currentPrices[symbol]) {
-        console.log("Symbol found in prices object: ", currentPrices[symbol]);
         const newPrice = trade.p;
         const newChange = newPrice - currentPrices[symbol].closePrice!;
         const newPercentage =
@@ -65,7 +64,6 @@ export const PriceProvider = ({ children }: { children: React.ReactNode }) => {
           },
         }));
       } else {
-        console.log("Symbol not found in prices object: ", symbol);
         try {
           const responseQuote = await fetch(
             `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
@@ -105,10 +103,6 @@ export const PriceProvider = ({ children }: { children: React.ReactNode }) => {
         );
 
         if (!symbolExistsInItemsList) {
-          console.log(
-            `Symbol ${symbol} not found in items list`,
-            itemsListRef.current
-          );
           return;
         }
 
@@ -116,7 +110,6 @@ export const PriceProvider = ({ children }: { children: React.ReactNode }) => {
           !lastUpdateTimestamps[symbol] ||
           currentTime - lastUpdateTimestamps[symbol] >= 5000
         ) {
-          console.log("Updating price for symbol: ", symbol);
           lastUpdateTimestamps[symbol] = currentTime;
           handlePriceUpdate(symbol, trade);
         }

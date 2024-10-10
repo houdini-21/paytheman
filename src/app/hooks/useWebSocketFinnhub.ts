@@ -53,13 +53,11 @@ class FinnhubWebSocket {
       this.isSocketOpen = true;
       this.isReconnecting = false;
       this.reconnectAttempts = 0;
-      console.log("WebSocket connected.");
       this.flushMessageQueue(); // Enviar los mensajes encolados
     };
 
     this.socket.onclose = () => {
       this.isSocketOpen = false;
-      console.log("WebSocket closed.");
       if (!this.isReconnecting) {
         this.reconnect();
       }
@@ -83,10 +81,8 @@ class FinnhubWebSocket {
 
       if (this.isSocketOpen && this.socket) {
         this.socket.send(JSON.stringify(subscriptionMessage));
-        console.log(`Subscribed to ${symbol}`);
       } else {
         this.messageQueue.push(subscriptionMessage);
-        console.log(`Queued subscription for ${symbol}`);
       }
 
       this.activeSubscriptions.add(symbol);
@@ -104,10 +100,8 @@ class FinnhubWebSocket {
 
       if (this.isSocketOpen && this.socket) {
         this.socket.send(JSON.stringify(unsubscriptionMessage));
-        console.log(`Unsubscribed from ${symbol}`);
       } else {
         this.messageQueue.push(unsubscriptionMessage);
-        console.log(`Queued unsubscription for ${symbol}`);
       }
 
       this.activeSubscriptions.delete(symbol);
@@ -125,7 +119,6 @@ class FinnhubWebSocket {
   public setOnMessageHandler(handler: (event: MessageEvent) => void) {
     this.messageHandlers.push(handler);
     if (this.socket) {
-      console.log("Setting message handler", this.messageHandlers.length);
       this.socket.onmessage = (event: MessageEvent) => {
         this.messageHandlers.forEach((h) => h(event));
       };
@@ -136,7 +129,6 @@ class FinnhubWebSocket {
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
       this.reconnectAttempts++;
       const delay = this.reconnectDelay * this.reconnectAttempts;
-      console.log(`Attempting to reconnect in ${delay / 1000} seconds...`);
 
       this.isReconnecting = true;
 
@@ -155,7 +147,6 @@ class FinnhubWebSocket {
       const message = this.messageQueue.shift();
       if (message) {
         this.socket.send(JSON.stringify(message));
-        console.log(`Flushed message: ${message.type} ${message.symbol}`);
       }
     }
   }

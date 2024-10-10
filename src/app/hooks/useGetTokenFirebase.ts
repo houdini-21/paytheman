@@ -8,7 +8,6 @@ const getFirebaseToken = async () => {
         vapidKey:
           "BNxJhM0SD6JzSBWgn7k-GgYRMKIJl3VtHhPhC2sCtIiZOOPjnki9dGqSMSsEQYh2GntDOxYRrfOzgQAz0eNfqls",
       });
-      console.log("Firebase token:", token);
       return token;
     } catch (error) {
       console.error("Error getting Firebase token:", error);
