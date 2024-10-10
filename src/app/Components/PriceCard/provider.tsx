@@ -1,10 +1,12 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useRef } from "react";
+import { useAppSelector } from "@/Store";
 import FinnhubWebSocket from "@/app/hooks/useWebSocketFinnhub";
 
 interface PriceDetails {
   price: number | null;
   change: number | null;
   percentage: number | null;
+  closePrice: number | null;
 }
 
 interface PriceContextType {
@@ -23,26 +25,35 @@ export const usePriceContext = () => {
 };
 
 export const PriceProvider = ({ children }: { children: React.ReactNode }) => {
+  const itemsList = useAppSelector((state) => state.card.cards);
+  const itemsListRef = useRef(itemsList);
   const [prices, setPrices] = useState<Record<string, PriceDetails>>({});
+  const pricesRef = useRef(prices);
   const webSocket = FinnhubWebSocket.getInstance();
+
+  useEffect(() => {
+    itemsListRef.current = itemsList;
+  }, [itemsList]);
+
+  useEffect(() => {
+    pricesRef.current = prices;
+  }, [prices]);
 
   useEffect(() => {
     const handlePriceUpdate = async (
       symbol: string,
-      trade: {
-        p: number;
-        c: number;
-        t: number;
-      }
+      trade: { p: number; c: number; t: number }
     ) => {
-      try {
-        const responseQuote = await fetch(
-          `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
-        );
-        const quote = await responseQuote.json();
+      const currentPrices = pricesRef.current;
+
+      if (currentPrices[symbol]) {
+        console.log("Symbol found in prices object: ", currentPrices[symbol]);
         const newPrice = trade.p;
-        const newChange = newPrice - quote.c;
-        const newPercentage = ((newPrice - quote.c) / quote.c) * 100;
+        const newChange = newPrice - currentPrices[symbol].closePrice!;
+        const newPercentage =
+          ((newPrice - currentPrices[symbol].closePrice!) /
+            currentPrices[symbol].closePrice!) *
+          100;
 
         setPrices((prevPrices) => ({
           ...prevPrices,
@@ -50,10 +61,32 @@ export const PriceProvider = ({ children }: { children: React.ReactNode }) => {
             price: newPrice,
             change: newChange,
             percentage: newPercentage,
+            closePrice: currentPrices[symbol].closePrice,
           },
         }));
-      } catch (error) {
-        console.error("Error fetching price data: ", error);
+      } else {
+        console.log("Symbol not found in prices object: ", symbol);
+        try {
+          const responseQuote = await fetch(
+            `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${process.env.NEXT_PUBLIC_FINNHUB_API_KEY}`
+          );
+          const quote = await responseQuote.json();
+          const newPrice = trade.p;
+          const newChange = newPrice - quote.c;
+          const newPercentage = ((newPrice - quote.c) / quote.c) * 100;
+
+          setPrices((prevPrices) => ({
+            ...prevPrices,
+            [symbol]: {
+              price: newPrice,
+              change: newChange,
+              percentage: newPercentage,
+              closePrice: quote.c,
+            },
+          }));
+        } catch (error) {
+          console.error("Error fetching price data: ", error);
+        }
       }
     };
 
@@ -64,25 +97,35 @@ export const PriceProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (data.type === "trade" && data.data.length > 0) {
         const trade = data.data[0];
+        const symbol = trade.s;
         const currentTime = Date.now();
 
-        // Verificar si ha pasado al menos 5 segundos desde la última actualización
+        const symbolExistsInItemsList = itemsListRef.current.some(
+          (item) => item.companySymbol === symbol
+        );
+
+        if (!symbolExistsInItemsList) {
+          console.log(
+            `Symbol ${symbol} not found in items list`,
+            itemsListRef.current
+          );
+          return;
+        }
+
         if (
-          !lastUpdateTimestamps[trade.s] ||
-          currentTime - lastUpdateTimestamps[trade.s] >= 5000
+          !lastUpdateTimestamps[symbol] ||
+          currentTime - lastUpdateTimestamps[symbol] >= 5000
         ) {
-          console.log("Actualizando precio de:", trade.s);
-          lastUpdateTimestamps[trade.s] = currentTime;
-          handlePriceUpdate(trade.s, trade);
+          console.log("Updating price for symbol: ", symbol);
+          lastUpdateTimestamps[symbol] = currentTime;
+          handlePriceUpdate(symbol, trade);
         }
       }
     };
 
-    // Asignar el manejador de mensajes del WebSocket
     webSocket.setOnMessageHandler(messageHandler);
 
     return () => {
-      // Limpiar el manejador de mensajes al desmontar el componente
       webSocket.setOnMessageHandler(() => {});
     };
   }, [webSocket]);

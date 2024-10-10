@@ -10,22 +10,51 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
 import stockReducer from "./Stock/stockSlice";
 import notificationReducer from "./Notification/notificationSlice";
 import cardReducer from "./Card/cardSlice";
+import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
-const persistConfig = {
-  key: "root",
+const createNoopStorage = () => {
+  return {
+    getItem(_key: any) {
+      return Promise.resolve(null);
+    },
+    setItem(_key: any, _value: any) {
+      return Promise.resolve();
+    },
+    removeItem(_key: any) {
+      return Promise.resolve();
+    },
+  };
+};
+
+const storage =
+  typeof window !== "undefined"
+    ? createWebStorage("local")
+    : createNoopStorage();
+
+const persistNotificationConfig = {
+  key: "notification",
   storage,
 };
 
-const persistedStockReducer = persistReducer(persistConfig, stockReducer);
+const persistCardConfig = {
+  key: "card",
+  storage,
+};
+
+const persistStockConfig = {
+  key: "stock",
+  storage,
+};
+
 const persistedNotificationReducer = persistReducer(
-  persistConfig,
+  persistNotificationConfig,
   notificationReducer
 );
-const persistedCardReducer = persistReducer(persistConfig, cardReducer);
+const persistedCardReducer = persistReducer(persistCardConfig, cardReducer);
+const persistedStockReducer = persistReducer(persistStockConfig, stockReducer);
 
 export const store = configureStore({
   reducer: {

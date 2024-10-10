@@ -125,6 +125,7 @@ class FinnhubWebSocket {
   public setOnMessageHandler(handler: (event: MessageEvent) => void) {
     this.messageHandlers.push(handler);
     if (this.socket) {
+      console.log("Setting message handler", this.messageHandlers.length);
       this.socket.onmessage = (event: MessageEvent) => {
         this.messageHandlers.forEach((h) => h(event));
       };

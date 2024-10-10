@@ -18,8 +18,7 @@ export const Chart = () => {
   useEffect(() => {
     const fetchMarketStatus = async () => {
       const status = await marketStatus();
-      console.log(status, "status");
-      setIsOpen(true);
+      setIsOpen(status?.isOpen);
     };
     fetchMarketStatus();
   }, []);

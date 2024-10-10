@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAppSelector } from "@/Store";
 import { SelectComponentItem } from "../Select/interfaces";
 import FinnhubWebSocket from "@/app/hooks/useWebSocketFinnhub";
@@ -19,6 +19,7 @@ interface NotificationStateItem {
 
 export const NotificationsComponent = () => {
   const itemsList = useAppSelector((state) => state.notification.items);
+  const itemsListRef = useRef(itemsList);
   const webSocket = FinnhubWebSocket.getInstance();
 
   const subscribeToSymbol = (symbol: string) => {
@@ -43,10 +44,8 @@ export const NotificationsComponent = () => {
     }
   };
 
-  const checkPriceAlert = (
-    trade: Trade,
-    notificationList: NotificationStateItem[]
-  ) => {
+  const checkPriceAlert = (trade: Trade) => {
+    const notificationList = itemsListRef.current;
     notificationList.forEach((notification) => {
       if (
         notification.companySymbol === trade.s &&
@@ -93,6 +92,10 @@ export const NotificationsComponent = () => {
   }, []);
 
   useEffect(() => {
+    itemsListRef.current = itemsList;
+  }, [itemsList]);
+
+  useEffect(() => {
     const lastUpdateTimestamps: Record<string, number> = {};
 
     itemsList.forEach((item) => {
@@ -100,7 +103,6 @@ export const NotificationsComponent = () => {
     });
 
     const messageHandler = (event: MessageEvent) => {
-      if (itemsList.length === 0) return;
       const data = JSON.parse(event.data);
 
       if (data.type === "trade" && data.data.length > 0) {
@@ -113,12 +115,14 @@ export const NotificationsComponent = () => {
           currentTime - lastUpdateTimestamps[symbol] >= 5000
         ) {
           lastUpdateTimestamps[symbol] = currentTime;
-          checkPriceAlert(trade, itemsList);
+          checkPriceAlert(trade);
         }
       }
     };
 
-    webSocket.setOnMessageHandler(messageHandler);
+    if (itemsList.length > 0) {
+      webSocket.setOnMessageHandler(messageHandler);
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemsList]);
